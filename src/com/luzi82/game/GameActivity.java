@@ -5,16 +5,16 @@ import android.os.Bundle;
 
 import com.luzi82.iconmatch.R;
 
-public class GameActivity extends Activity {
+public abstract class GameActivity extends Activity {
 
 	AbstractGame game;
 	GameView view;
 	GameThread thread;
 
-	protected void onCreate(Bundle savedInstanceState, AbstractGame game) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.game = game;
+		game = getGame();
 
 		setContentView(R.layout.game_layout);
 
@@ -24,5 +24,7 @@ public class GameActivity extends Activity {
 		view.setGame(game);
 		thread.setGame(game);
 	}
+
+	protected abstract AbstractGame getGame();
 
 }

@@ -11,7 +11,7 @@ public class GameView extends SurfaceView {
 
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
+		thread = new GameThread();
 	}
 
 	public GameThread getThread() {
