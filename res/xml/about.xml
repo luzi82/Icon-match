@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="@string/about_session_app_title">
+
+		<Preference android:key="about_appname"
+			android:title="@string/about_appname_title"
+			android:summary="@string/app_name">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="@string/about_appname_url" />
+		</Preference>
+		<Preference android:key="about_version"
+			android:title="@string/about_version_title" />
+		<Preference android:key="about_developer"
+			android:title="@string/about_developer_title"
+			android:summary="@string/about_developer_name">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="@string/about_developer_url" />
+		</Preference>
+		<Preference android:key="about_appwebpage"
+			android:title="@string/about_appwebpage_title"
+			android:summary="@string/about_appwebpage_url">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="@string/about_appwebpage_url" />
+		</Preference>
+		<Preference android:key="about_moreapp"
+			android:title="@string/about_moreapp_title">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="@string/about_moreapp_url" />
+		</Preference>
+		<Preference android:key="about_email"
+			android:title="@string/about_email_title"
+			android:summary="@string/about_email_subtitle">
+			<intent android:action="android.intent.action.SEND" />
+		</Preference>
+		<Preference android:key="about_share"
+			android:title="@string/about_share_title">
+			<intent android:action="android.intent.action.MAIN"
+				android:targetPackage="com.luzi82.iconmatch"
+				android:targetClass="com.luzi82.iconmatch.QRCode" />
+		</Preference>
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="@string/about_session_other_title">
+		<Preference android:key="about_xlsg"
+			android:title="@string/about_xlsg_title"
+			android:summary="@string/about_xlsg_subtitle">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="@string/about_xlsg_url" />
+		</Preference>
+	</PreferenceCategory>
+
+</PreferenceScreen>

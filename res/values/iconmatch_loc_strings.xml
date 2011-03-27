@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="i18n_version">20110325000737</string>
+
+    <string name="about_appname_title">Application name</string>
+    <string name="about_appname_url">market://details?id=com.luzi82.iconmatch</string>
+    <string name="about_appwebpage_title">Visit the application\'s web page</string>
+    <string name="about_appwebpage_url">http://wiki.github.com/luzi82/IconMatch/</string>
+    <string name="about_developer_name">Luzi82</string>
+    <string name="about_developer_title">Developer</string>
+    <string name="about_developer_url">http://touch.facebook.com/luzi82</string>
+    <string name="about_email_address">luzi82@gmail.com</string>
+    <string name="about_email_subtitle">luzi82@gmail.com</string>
+    <string name="about_email_title">Send email to developer</string>
+    <string name="about_i18n_version_title">Localization version</string>
+    <string name="about_moreapp_title">View more applications</string>
+    <string name="about_moreapp_url">market://search?q=pub:luzi82</string>
+    <string name="about_session_app_title">Application</string>
+    <string name="about_session_other_title">Miscellaneous</string>
+    <string name="about_session_version_title">Version</string>
+    <string name="about_share_title">Share this application</string>
+    <string name="about_title">About application</string>
+    <string name="about_version_title">Application version</string>
+    <string name="about_xlsg_subtitle">A comic about China web censorship (Chinese)</string>
+    <string name="about_xlsg_title">小绿四格</string>
+    <string name="about_xlsg_url">http://comicxlsg.blogspot.com/</string>
+    <string name="app_name">Icon match</string>
+    <string name="app_title">Icon match</string>
+    <string name="emptylist">No data</string>
+    <string name="main_menu_about">About</string>
+    <string name="main_tab_appwidgetid">Id</string>
+    <string name="main_tab_info">Info</string>
+    <string name="main_tab_log">Log</string>
+    <string name="main_tab_provider">Provider</string>
+    <string name="mainmenu_play_title">Play</string>
+    <string name="qrcode_title">Share Icon match</string>
+</resources>
