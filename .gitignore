@@ -3,10 +3,9 @@ gen
 out
 install.sh
 uninstall.sh
-res/values*/iconmatch_strings_loc.xml
 .~lock.i18n.ods#
 .i18n_timestamp
 .classpath
 .project
 default.properties
-
+res/values*/iconmatch_loc_strings.xml
