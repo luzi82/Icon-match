@@ -9,3 +9,4 @@ uninstall.sh
 .project
 default.properties
 res/values*/iconmatch_loc_strings.xml
+/game_engine
