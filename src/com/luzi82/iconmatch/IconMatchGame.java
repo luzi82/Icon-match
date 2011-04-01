@@ -18,10 +18,12 @@ public class IconMatchGame extends AbstractGame {
 	final static float PENALTY_UNIT = 20;
 
 	final static Paint LIVE_PAINT = new Paint();
+	final static Paint INACTIVE_PAINT = new Paint();
 	final static Paint PENALTY_PAINT = new Paint();
 	final static Paint DEAD_PAINT = new Paint();
 	static {
 		LIVE_PAINT.setColor(Color.WHITE);
+		INACTIVE_PAINT.setColor(Color.GRAY);
 		PENALTY_PAINT.setColor(Color.YELLOW);
 		DEAD_PAINT.setColor(Color.RED);
 	}
@@ -54,11 +56,14 @@ public class IconMatchGame extends AbstractGame {
 
 	@Override
 	public void draw(Canvas c) {
-		Paint paint = mGameEnd ? DEAD_PAINT : mPenaltyState ? PENALTY_PAINT
-				: LIVE_PAINT;
+		Paint firstpaint = mGameEnd ? DEAD_PAINT
+				: mPenaltyState ? PENALTY_PAINT : LIVE_PAINT;
+		Paint otherpaint = mGameEnd ? DEAD_PAINT
+				: mPenaltyState ? PENALTY_PAINT : INACTIVE_PAINT;
 		c.drawColor(Color.BLACK);
 		float lineY = mScreenHeight - (mLifeUnit * mBarScreenHeight / BAR_UNIT)
 				- mBarScreenHeight;
+		Paint paint = firstpaint;
 		for (int v : answer) {
 			float topY = lineY - mBarScreenHeight + 1;
 			if (v == 0) {
@@ -67,6 +72,7 @@ public class IconMatchGame extends AbstractGame {
 				c.drawRect(mScreenWidth / 2, topY, mScreenWidth, lineY, paint);
 			}
 			lineY -= mBarScreenHeight;
+			paint = otherpaint;
 		}
 	}
 
