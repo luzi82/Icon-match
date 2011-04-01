@@ -40,6 +40,7 @@ public class IconMatchGame extends AbstractGame {
 
 	int mBarScreenHeight;
 	int mScreenBarCount;
+	int mBottomScreenHeight;
 
 	float mLifeUnit = LIFE_MAX_UNIT; // 0-100
 	float mFastReduceUnit = LIFE_MAX_UNIT;
@@ -62,7 +63,7 @@ public class IconMatchGame extends AbstractGame {
 				: mPenaltyState ? PENALTY_PAINT : INACTIVE_PAINT;
 		c.drawColor(Color.BLACK);
 		float lineY = mScreenHeight - (mLifeUnit * mBarScreenHeight / BAR_UNIT)
-				- mBarScreenHeight;
+				- mBottomScreenHeight;
 		Paint paint = firstpaint;
 		for (int v : answer) {
 			float topY = lineY - mBarScreenHeight + 1;
@@ -172,6 +173,7 @@ public class IconMatchGame extends AbstractGame {
 		mScreenHeight = height;
 		mBarScreenHeight = width * 2 / 7;
 		mScreenBarCount = (mScreenHeight / mBarScreenHeight) + 1;
+		mBottomScreenHeight = width / 8;
 	}
 
 	IconMatchGameActivity mActivity;
