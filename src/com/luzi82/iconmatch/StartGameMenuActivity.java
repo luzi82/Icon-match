@@ -2,8 +2,6 @@ package com.luzi82.iconmatch;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.view.View;
-import android.widget.ListView;
 
 public class StartGameMenuActivity extends PreferenceActivity {
 
