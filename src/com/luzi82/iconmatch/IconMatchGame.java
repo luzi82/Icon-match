@@ -31,6 +31,16 @@ public class IconMatchGame extends AbstractGame {
 	final static float BASE_SPEED = 1;
 	final static float SPEED_FACTOR = (float) (Math.log(2) / 60);
 
+	Paint mScorePaint = new Paint();
+	Paint mComboPaint = new Paint();
+	{
+		mScorePaint.setColor(Color.WHITE);
+		mScorePaint.setTextAlign(Paint.Align.LEFT);
+		mComboPaint.setColor(Color.WHITE);
+		mComboPaint.setTextAlign(Paint.Align.RIGHT);
+	}
+	float mScoreY = 0;
+
 	// long mStartTime = System.currentTimeMillis();
 
 	int mPeriodMs;
@@ -53,7 +63,12 @@ public class IconMatchGame extends AbstractGame {
 
 	int mBlockDone = 0;
 
-	LinkedList<Integer> answer = new LinkedList<Integer>();
+	int mShowScore = 0;
+	float mScore = 0;
+	float mScoreBase = 0;
+	int mCombo = 0;
+
+	LinkedList<Integer> mAnswer = new LinkedList<Integer>();
 
 	@Override
 	public void draw(Canvas c) {
@@ -65,7 +80,7 @@ public class IconMatchGame extends AbstractGame {
 		float lineY = mScreenHeight - (mLifeUnit * mBarScreenHeight / BAR_UNIT)
 				- mBottomScreenHeight;
 		Paint paint = firstpaint;
-		for (int v : answer) {
+		for (int v : mAnswer) {
 			float topY = lineY - mBarScreenHeight + 1;
 			if (v == 0) {
 				c.drawRect(0, topY, mScreenWidth / 2, lineY, paint);
@@ -75,6 +90,10 @@ public class IconMatchGame extends AbstractGame {
 			lineY -= mBarScreenHeight;
 			paint = otherpaint;
 		}
+		c.drawText(Integer.toString(mShowScore), 0, mScoreY, mScorePaint);
+		c
+				.drawText(Integer.toString(mCombo), mScreenWidth, mScoreY,
+						mComboPaint);
 	}
 
 	@Override
@@ -96,8 +115,8 @@ public class IconMatchGame extends AbstractGame {
 					* (BASE_SPEED + SPEED_FACTOR * mBlockDone) / 1000;
 
 			// bar re-gen
-			while (answer.size() < mScreenBarCount) {
-				answer.addLast((Math.random() < 0.5) ? 0 : 1);
+			while (mAnswer.size() < mScreenBarCount) {
+				mAnswer.addLast((Math.random() < 0.5) ? 0 : 1);
 			}
 
 			// life reduce
@@ -143,7 +162,7 @@ public class IconMatchGame extends AbstractGame {
 			if (!mPenaltyState) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					int v = (event.getX() < mScreenWidth / 2) ? 0 : 1;
-					int first = answer.getFirst();
+					int first = mAnswer.getFirst();
 					if (first == v) {
 						mLifeUnit += BAR_UNIT;
 						mFastReduceUnit += BAR_UNIT;
@@ -151,13 +170,20 @@ public class IconMatchGame extends AbstractGame {
 							mFastReduceUnit = LIFE_MAX_UNIT;
 						}
 						++mBlockDone;
+						++mCombo;
 					} else {
 						mPenaltyState = true;
 						mPenaltyUnit = mLifeUnit - PENALTY_UNIT;
 						mLifeUnit += BAR_UNIT;
 						mFastReduceUnit += BAR_UNIT;
+						mScoreBase = mScore;
+						mCombo = 0;
 					}
-					answer.removeFirst();
+					mAnswer.removeFirst();
+					mScore = mScoreBase
+							+ ((mCombo > 0) ? ((float) (mCombo * Math
+									.log10(mCombo))) : 0f);
+					mShowScore = (int) (mScore * 10);
 				}
 			}
 		}
@@ -174,6 +200,9 @@ public class IconMatchGame extends AbstractGame {
 		mBarScreenHeight = width * 2 / 7;
 		mScreenBarCount = (mScreenHeight / mBarScreenHeight) + 1;
 		mBottomScreenHeight = width / 8;
+		mScorePaint.setTextSize(mBottomScreenHeight * 0.75f);
+		mComboPaint.setTextSize(mBottomScreenHeight * 0.75f);
+		mScoreY = height - (mBottomScreenHeight / 8.0f);
 	}
 
 	IconMatchGameActivity mActivity;
