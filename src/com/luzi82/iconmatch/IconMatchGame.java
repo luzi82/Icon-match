@@ -1,9 +1,14 @@
 package com.luzi82.iconmatch;
 
+import java.io.File;
 import java.util.LinkedList;
+import java.util.Random;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -21,15 +26,21 @@ public class IconMatchGame extends AbstractGame {
 	final static Paint INACTIVE_PAINT = new Paint();
 	final static Paint PENALTY_PAINT = new Paint();
 	final static Paint DEAD_PAINT = new Paint();
+	final static Paint LIFE_LIMIT_PAINT = new Paint();
+	final static Paint BOTTOM_BAR_BACKGROUND = new Paint();
 	static {
 		LIVE_PAINT.setColor(Color.WHITE);
 		INACTIVE_PAINT.setColor(Color.GRAY);
 		PENALTY_PAINT.setColor(Color.YELLOW);
 		DEAD_PAINT.setColor(Color.RED);
+		LIFE_LIMIT_PAINT.setColor(Color.WHITE);
+		BOTTOM_BAR_BACKGROUND.setColor(Color.BLACK);
 	}
 
-	final static float BASE_SPEED = 1;
+	final static float BASE_SPEED = 0.5f;
 	final static float SPEED_FACTOR = (float) (Math.log(2) / 60);
+
+	final static Random random = new Random();
 
 	Paint mScorePaint = new Paint();
 	Paint mComboPaint = new Paint();
@@ -52,6 +63,9 @@ public class IconMatchGame extends AbstractGame {
 	int mScreenBarCount;
 	int mBottomScreenHeight;
 
+	Bitmap[] mSelectionBitmap;
+	Bitmap[] mCenterBitmap;
+
 	float mLifeUnit = LIFE_MAX_UNIT; // 0-100
 	float mFastReduceUnit = LIFE_MAX_UNIT;
 	float mPenaltyUnit;
@@ -68,28 +82,38 @@ public class IconMatchGame extends AbstractGame {
 	float mScoreBase = 0;
 	int mCombo = 0;
 
-	LinkedList<Integer> mAnswer = new LinkedList<Integer>();
+	LinkedList<Block> mAnswer = new LinkedList<Block>();
 
 	@Override
 	public void draw(Canvas c) {
-		Paint firstpaint = mGameEnd ? DEAD_PAINT
-				: mPenaltyState ? PENALTY_PAINT : LIVE_PAINT;
-		Paint otherpaint = mGameEnd ? DEAD_PAINT
-				: mPenaltyState ? PENALTY_PAINT : INACTIVE_PAINT;
-		c.drawColor(Color.BLACK);
+		// Paint firstpaint = mGameEnd ? DEAD_PAINT
+		// : mPenaltyState ? PENALTY_PAINT : LIVE_PAINT;
+		// Paint otherpaint = mGameEnd ? DEAD_PAINT
+		// : mPenaltyState ? PENALTY_PAINT : INACTIVE_PAINT;
+		c.drawColor(mPenaltyState ? Color.YELLOW : Color.BLACK);
 		float lineY = mScreenHeight - (mLifeUnit * mBarScreenHeight / BAR_UNIT)
 				- mBottomScreenHeight;
-		Paint paint = firstpaint;
-		for (int v : mAnswer) {
+		// Paint paint = firstpaint;
+		for (Block v : mAnswer) {
 			float topY = lineY - mBarScreenHeight + 1;
-			if (v == 0) {
-				c.drawRect(0, topY, mScreenWidth / 2, lineY, paint);
-			} else {
-				c.drawRect(mScreenWidth / 2, topY, mScreenWidth, lineY, paint);
-			}
+			// if (v == 0) {
+			// c.drawRect(0, topY, mScreenWidth / 2, lineY, paint);
+			// } else {
+			// c.drawRect(mScreenWidth / 2, topY, mScreenWidth, lineY, paint);
+			// }
+			c.drawBitmap(mSelectionBitmap[v.left], 0, topY, null);
+			c.drawBitmap(mCenterBitmap[v.center],
+					(mScreenWidth - mBarScreenHeight) / 2, topY, null);
+			c.drawBitmap(mSelectionBitmap[v.right],
+					(mScreenWidth - mBarScreenHeight), topY, null);
+			c.drawLine(0, lineY, mScreenWidth, lineY, LIVE_PAINT);
 			lineY -= mBarScreenHeight;
-			paint = otherpaint;
+			// paint = otherpaint;
 		}
+		c.drawRect(0, mScreenHeight - mBottomScreenHeight, mScreenWidth,
+				mScreenHeight, BOTTOM_BAR_BACKGROUND);
+		c.drawLine(0, mScreenHeight - mBottomScreenHeight, mScreenWidth,
+				mScreenHeight - mBottomScreenHeight, LIFE_LIMIT_PAINT);
 		c.drawText(Integer.toString(mShowScore), 0, mScoreY, mScorePaint);
 		c
 				.drawText(Integer.toString(mCombo), mScreenWidth, mScoreY,
@@ -116,7 +140,12 @@ public class IconMatchGame extends AbstractGame {
 
 			// bar re-gen
 			while (mAnswer.size() < mScreenBarCount) {
-				mAnswer.addLast((Math.random() < 0.5) ? 0 : 1);
+				Block newBlock = new Block();
+				newBlock.left = randomNext();
+				newBlock.right = randomNext();
+				newBlock.center = (Math.random() < 0.5) ? newBlock.left
+						: newBlock.right;
+				mAnswer.addLast(newBlock);
 			}
 
 			// life reduce
@@ -126,7 +155,7 @@ public class IconMatchGame extends AbstractGame {
 				mLifeUnit = mFastReduceUnit;
 			} else {
 				mLifeUnit -= 1;
-				mLifeUnit = (mLifeUnit * 3 + mFastReduceUnit) / 4;
+				mLifeUnit = (mLifeUnit * 7 + mFastReduceUnit) / 8;
 			}
 
 			// penalty state
@@ -162,8 +191,8 @@ public class IconMatchGame extends AbstractGame {
 			if (!mPenaltyState) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					int v = (event.getX() < mScreenWidth / 2) ? 0 : 1;
-					int first = mAnswer.getFirst();
-					if (first == v) {
+					Block first = mAnswer.getFirst();
+					if ((v == 0) == (first.center == first.left)) {
 						mLifeUnit += BAR_UNIT;
 						mFastReduceUnit += BAR_UNIT;
 						if (mFastReduceUnit > LIFE_MAX_UNIT) {
@@ -203,6 +232,67 @@ public class IconMatchGame extends AbstractGame {
 		mScorePaint.setTextSize(mBottomScreenHeight * 0.75f);
 		mComboPaint.setTextSize(mBottomScreenHeight * 0.75f);
 		mScoreY = height - (mBottomScreenHeight / 8.0f);
+
+		loadFile();
+	}
+
+	private void loadFile() {
+		LinkedList<Bitmap> aBitmapList = new LinkedList<Bitmap>();
+		LinkedList<Bitmap> bBitmapList = new LinkedList<Bitmap>();
+
+		String path = "/sdcard/IconMatch/MadokaRune";
+		File bitmapFolder = new File(path);
+		String[] folderContent = bitmapFolder.list();
+		for (String filename : folderContent) {
+			if (!filename.endsWith(".a.png"))
+				continue;
+			String prefix = filename.substring(0, filename.length() - 6);
+			String aFilename = path + File.separator + prefix + ".a.png";
+			String bFilename = path + File.separator + prefix + ".b.png";
+			if (!new File(aFilename).exists())
+				continue;
+			if (!new File(bFilename).exists())
+				continue;
+			Bitmap aBitmap = BitmapFactory.decodeFile(aFilename);
+			aBitmap = resize(aBitmap, mBarScreenHeight, mBarScreenHeight);
+			aBitmapList.add(aBitmap);
+			Bitmap bBitmap = BitmapFactory.decodeFile(bFilename);
+			bBitmap = resize(bBitmap, mBarScreenHeight, mBarScreenHeight);
+			bBitmapList.add(bBitmap);
+		}
+
+		mCenterBitmap = aBitmapList.toArray(new Bitmap[0]);
+		mSelectionBitmap = bBitmapList.toArray(new Bitmap[0]);
+	}
+
+	private Bitmap resize(Bitmap bitmap, int targetWidth, int targetHeight) {
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+
+		float scaleWidth = ((float) targetWidth) / width;
+		float scaleHeight = ((float) targetHeight) / height;
+
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height,
+				matrix, true);
+
+		return resizedBitmap;
+	}
+
+	LinkedList<Integer> randomHistory = new LinkedList<Integer>();
+
+	private int randomNext() {
+		int ret;
+		do {
+			ret = random.nextInt(mSelectionBitmap.length);
+		} while (randomHistory.contains(ret));
+		randomHistory.addFirst(ret);
+		while (randomHistory.size() > 10) {
+			randomHistory.removeLast();
+		}
+		return ret;
 	}
 
 	IconMatchGameActivity mActivity;
@@ -210,6 +300,12 @@ public class IconMatchGame extends AbstractGame {
 	public IconMatchGame(IconMatchGameActivity iconMatchGameActivity) {
 		mActivity = iconMatchGameActivity;
 		mPeriodMs = (int) mActivity.getPeriodMs();
+	}
+
+	class Block {
+		int left;
+		int center;
+		int right;
 	}
 
 }
