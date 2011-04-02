@@ -26,7 +26,7 @@ public class IconMatchGameActivity extends GameActivity {
 	}
 
 	@Override
-	public long getPeriodMs() {
+	public int getPeriodMs() {
 		return 20;
 	}
 
