@@ -3,7 +3,7 @@ package com.luzi82.iconmatch;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
-import com.luzi82.game.AbstractGame;
+import com.luzi82.game.AbstractState;
 import com.luzi82.game.GameActivity;
 
 public class IconMatchGameActivity extends GameActivity {
@@ -16,7 +16,7 @@ public class IconMatchGameActivity extends GameActivity {
 	}
 
 	@Override
-	protected AbstractGame createGame() {
+	protected AbstractState createGame() {
 		return new IconMatchGame(this);
 	}
 

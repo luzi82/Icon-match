@@ -13,9 +13,9 @@ import android.graphics.Paint;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
-import com.luzi82.game.AbstractGame;
+import com.luzi82.game.AbstractState;
 
-public class IconMatchGame extends AbstractGame {
+public class IconMatchGame extends AbstractState {
 
 	final static float BAR_UNIT = 20;
 	final static float LIFE_MAX_UNIT = 80;
