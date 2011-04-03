@@ -18,7 +18,7 @@ public class GameEndState extends AbstractState {
 
 	@Override
 	public void draw(Canvas c) {
-		// do nothing
+		mIconMatchGame.drawGrayLayer(c);
 	}
 
 	@Override

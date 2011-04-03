@@ -16,6 +16,7 @@ public class GamePauseState extends AbstractState {
 
 	@Override
 	public void draw(Canvas c) {
+		mIconMatchGame.drawGrayLayer(c);
 	}
 
 	@Override

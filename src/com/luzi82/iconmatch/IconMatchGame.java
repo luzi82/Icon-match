@@ -153,6 +153,10 @@ public class IconMatchGame extends StateGroup {
 				mScoreY, mComboPaint);
 	}
 
+	public void drawGrayLayer(Canvas c) {
+		c.drawColor(Color.argb(0x7f, 0, 0, 0));
+	}
+
 	private void loadFile() {
 		LinkedList<Bitmap> aBitmapList = new LinkedList<Bitmap>();
 		LinkedList<Bitmap> bBitmapList = new LinkedList<Bitmap>();
