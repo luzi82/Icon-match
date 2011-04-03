@@ -45,7 +45,7 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		float textY = mUnit * 5;
 		float rightX = mParent.getScreenWidth();
 
-		textY += mUnit * 3;
+		textY += mUnit * 2;
 		c.drawText("FIN", centerX, textY, mTitlePaint);
 
 		textY += mUnit * 1;
@@ -101,19 +101,18 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		mMiss = Integer.toString(mParent.mGameMachine.mMiss);
 		mMaxCombo = Integer.toString(mParent.mGameMachine.mMaxCombo);
 
-		mUnit = mParent.getScreenHeight() / 24f;
-		mTitlePaint.setTextSize(mUnit * 3);
-		mItemTitlePaint.setTextSize(mUnit * 2);
-		mItemValuePaint.setTextSize(mUnit * 2);
-		mClickPaint.setTextSize(mUnit);
+		updateSize();
 	}
 
 	@Override
 	public void surfaceChanged(int format, int width, int height) {
 		super.surfaceChanged(format, width, height);
+		updateSize();
+	}
 
+	private void updateSize() {
 		mUnit = mParent.getScreenHeight() / 24f;
-		mTitlePaint.setTextSize(mUnit * 3);
+		mTitlePaint.setTextSize(mUnit * 2);
 		mItemTitlePaint.setTextSize(mUnit * 2);
 		mItemValuePaint.setTextSize(mUnit * 2);
 		mClickPaint.setTextSize(mUnit);
