@@ -99,13 +99,15 @@ public class GameLogic {
 		}
 	}
 
-	void killBlock(int pos) {
+	// return: 1:hit, -1:miss, 0:ignore
+	int killBlock(int pos) {
 		if (mPenaltyState) {
-			return;
+			return 0;
 		}
 		if (mGameEnd) {
-			return;
+			return 0;
 		}
+		int ret;
 		Block first = mAnswer.getFirst();
 		if ((pos == 0) == (first.center == first.left)) {
 			mLifeUnit += BAR_UNIT;
@@ -118,6 +120,7 @@ public class GameLogic {
 			if (mCombo > mMaxCombo) {
 				mMaxCombo = mCombo;
 			}
+			ret = 1;
 		} else {
 			mPenaltyState = true;
 			mPenaltyUnit = mLifeUnit - PENALTY_UNIT;
@@ -127,12 +130,15 @@ public class GameLogic {
 			mCombo = 0;
 			mLastMissBlock = mAnswer.getFirst();
 			++mMiss;
+			ret = -1;
 		}
 		mAnswer.removeFirst();
 		mScoreFloat = mScoreBase
 				+ ((mCombo > 0) ? ((float) (mCombo * Math.log10(mCombo))) : 0f);
 		mScore = (int) (mScoreFloat * 10);
 		buildBlock();
+
+		return ret;
 	}
 
 	private int randomNext() {

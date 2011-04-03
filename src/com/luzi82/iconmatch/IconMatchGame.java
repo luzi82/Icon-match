@@ -47,6 +47,10 @@ public class IconMatchGame extends
 
 	final static Random mRandom = new Random();
 
+	final static long CLICK_DRAW_FADE_MS = 300;
+	final static int CLICK_ALPHA_MAX = 0x7f;
+	final static float CLICK_RADIUS_FACTOR = 0.5f;
+
 	// instance const
 
 	final int mPeriodMs;
@@ -73,13 +77,26 @@ public class IconMatchGame extends
 	Bitmap[] mSelectionBitmap;
 	Bitmap[] mCenterBitmap;
 
+	float mClickDrawRadius;
+
 	// game var
 
 	GameLogic mGameMachine;
 
 	// tick/draw var
 
-	public long now;
+	public long mNow;
+	final Paint mPressHitPaint = new Paint();
+	final Paint mPressMissPaint = new Paint();
+	{
+		mPressHitPaint.setColor(Color.GREEN);
+		mPressHitPaint.setStrokeWidth(5);
+		mPressHitPaint.setStyle(Paint.Style.STROKE);
+		mPressMissPaint.setColor(Color.RED);
+		mPressMissPaint.setStrokeWidth(5);
+		mPressMissPaint.setStyle(Paint.Style.STROKE);
+	}
+	LinkedList<ClickDraw> mClickDrawList = new LinkedList<ClickDraw>();
 
 	// ////////////////////
 
@@ -115,22 +132,24 @@ public class IconMatchGame extends
 		mScorePaint.setTextSize(mBottomScreenHeight * 0.75f);
 		mComboPaint.setTextSize(mBottomScreenHeight * 0.75f);
 		mScoreY = height - (mBottomScreenHeight / 8.0f);
+		mClickDrawRadius = width * CLICK_RADIUS_FACTOR;
 
 		loadFile();
 	}
 
 	@Override
 	public void draw(Canvas c) {
-		now = System.currentTimeMillis();
+		mNow = System.currentTimeMillis();
 		c.drawColor(Color.BLACK);
 		drawBlockList(c);
 		drawBottomBar(c);
+		drawClickList(c);
 		super.draw(c);
 	}
 
 	@Override
 	public void tick() {
-		now = System.currentTimeMillis();
+		mNow = System.currentTimeMillis();
 		super.tick();
 	}
 
@@ -186,6 +205,38 @@ public class IconMatchGame extends
 				mScorePaint);
 		c.drawText(Integer.toString(mGameMachine.mCombo), mScreenWidthPx,
 				mScoreY, mComboPaint);
+	}
+
+	public void drawClickList(Canvas c) {
+		long now = mNow;
+		LinkedList<ClickDraw> remove = new LinkedList<ClickDraw>();
+		for (ClickDraw cd : mClickDrawList) {
+			float diff = ((float) (now - cd.mTime)) / CLICK_DRAW_FADE_MS;
+			if (diff >= 1) {
+				remove.add(cd);
+				continue;
+			}
+			drawClick(c, cd, diff);
+		}
+		for (ClickDraw cd : remove) {
+			mClickDrawList.remove(cd);
+		}
+	}
+
+	private void drawClick(Canvas c, ClickDraw cd, float diff) {
+		if (diff <= 0) {
+			return;
+		}
+		if (diff >= 1) {
+			return;
+		}
+		float radius = diff * mClickDrawRadius;
+		int alpha = (int) (CLICK_ALPHA_MAX * (1 - diff));
+		// int alpha = 0xff;
+		Paint paint = cd.mHit ? mPressHitPaint : mPressMissPaint;
+		paint.setAlpha(alpha);
+		// paint.setColor(Color.RED);
+		c.drawCircle(cd.mX, cd.mY, radius, paint);
 	}
 
 	public void drawGrayLayer(Canvas c) {
@@ -245,6 +296,13 @@ public class IconMatchGame extends
 				matrix, true);
 
 		return resizedBitmap;
+	}
+
+	static class ClickDraw {
+		float mX;
+		float mY;
+		long mTime;
+		boolean mHit;
 	}
 
 }

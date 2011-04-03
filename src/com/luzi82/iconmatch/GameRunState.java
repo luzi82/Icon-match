@@ -32,8 +32,16 @@ public class GameRunState extends AbstractState<IconMatchGame> {
 	@Override
 	public void onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			int v = (event.getX() < mParent.mScreenWidthPx / 2) ? 0 : 1;
-			mGameMachine.killBlock(v);
+			int v = (event.getX() < (mParent.mScreenWidthPx / 2)) ? 0 : 1;
+			int hit = mGameMachine.killBlock(v);
+			if(hit!=0){
+				IconMatchGame.ClickDraw cd=new IconMatchGame.ClickDraw();
+				cd.mHit=hit==1;
+				cd.mTime=System.currentTimeMillis();
+				cd.mX=event.getX();
+				cd.mY=event.getY();
+				mParent.mClickDrawList.add(cd);
+			}
 		}
 	}
 
