@@ -71,6 +71,7 @@ public class GameRunState extends AbstractState {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			int v = (event.getX() < mIconMatchGame.mScreenWidthPx / 2) ? 0 : 1;
 			mGameMachine.killBlock(v);
+			mIconMatchGame.mShowScore = (int) mGameMachine.mScore;
 		}
 	}
 
