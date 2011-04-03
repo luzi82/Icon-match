@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class GameLogic {
 
+	// const
+
 	final public static float BAR_UNIT = 20;
 	final static float LIFE_MAX_UNIT = 80;
 	final static float LIFE_MIN_UNIT = 0;
@@ -13,32 +15,36 @@ public class GameLogic {
 	final static float BASE_SPEED = 0.5f;
 	final static float SPEED_FACTOR = (float) (Math.log(2) / 60);
 
-	final Random mRandom;
+	// instance const
 
+	final Random mRandom;
 	final int mPeriodMs;
 
-	public int mSelectionSize;
+	// env var
 
+	public int mSelectionSize;
 	public int mScreenBarCount;
+
+	// long var
+
+	int mBlockDone = 0;
+	int mScore = 0;
+	float mScoreFloat = 0;
+	float mScoreBase = 0;
+	int mCombo = 0;
+	int mMaxCombo = 0;
+	int mMiss = 0;
 
 	public float mLifeUnit = LIFE_MAX_UNIT; // 0-100
 	float mFastReduceUnit = LIFE_MAX_UNIT;
 	public float mPenaltyUnit;
 
-	int mBlockDone = 0;
-
-	int mScore = 0;
-	float mScoreFloat = 0;
-	float mScoreBase = 0;
-	public int mCombo = 0;
-	int mMaxCombo = 0;
-	int mMiss = 0;
+	// short var
 
 	public boolean mPenaltyState = false;
 	public boolean mGameEnd = false;
 
 	public LinkedList<Block> mAnswer = new LinkedList<Block>();
-
 	LinkedList<Integer> mRandomHistory = new LinkedList<Integer>();
 
 	public GameLogic(int periodMs, Random random) {
