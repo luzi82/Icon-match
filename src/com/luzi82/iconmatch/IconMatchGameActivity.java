@@ -16,7 +16,7 @@ public class IconMatchGameActivity extends GameActivity {
 	}
 
 	@Override
-	protected AbstractState createGame() {
+	protected AbstractState<?> createGame() {
 		return new IconMatchGame(this);
 	}
 
