@@ -50,6 +50,9 @@ public class GameLogic {
 
 	Block mLastMissBlock;
 
+	int mLastHitTick;
+	int mLastHitScoreAdd;
+
 	public GameLogic(int periodMs, Random random) {
 		mPeriodMs = periodMs;
 		mRandom = random;
@@ -122,6 +125,7 @@ public class GameLogic {
 			if (mCombo > mMaxCombo) {
 				mMaxCombo = mCombo;
 			}
+			mLastHitTick = mTickGone;
 			ret = 1;
 		} else {
 			mPenaltyState = true;
@@ -137,7 +141,10 @@ public class GameLogic {
 		mAnswer.removeFirst();
 		mScoreFloat = mScoreBase
 				+ ((mCombo > 0) ? ((float) (mCombo * Math.log10(mCombo))) : 0f);
+		int oldScore = mScore;
 		mScore = (int) (mScoreFloat * 10);
+		mLastHitScoreAdd = mScore - oldScore;
+		
 		buildBlock();
 
 		return ret;

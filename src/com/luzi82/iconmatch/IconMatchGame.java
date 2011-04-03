@@ -51,6 +51,8 @@ public class IconMatchGame extends
 	final static int CLICK_ALPHA_MAX = 0x7f;
 	final static float CLICK_RADIUS_FACTOR = 0.5f;
 
+	final static int ADD_SCORE_MS = 1000;
+
 	// instance const
 
 	final int mPeriodMs;
@@ -64,11 +66,14 @@ public class IconMatchGame extends
 
 	final Paint mScorePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	final Paint mComboPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	final Paint mAddScorePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	{
 		mScorePaint.setColor(Color.WHITE);
 		mScorePaint.setTextAlign(Paint.Align.LEFT);
 		mComboPaint.setColor(Color.WHITE);
 		mComboPaint.setTextAlign(Paint.Align.RIGHT);
+		mAddScorePaint.setColor(Color.DKGRAY);
+		mAddScorePaint.setTextAlign(Paint.Align.CENTER);
 	}
 	float mScoreY = 0;
 	int mBarScreenHeight;
@@ -133,6 +138,7 @@ public class IconMatchGame extends
 		mComboPaint.setTextSize(mBottomScreenHeight * 0.75f);
 		mScoreY = height - (mBottomScreenHeight / 8.0f);
 		mClickDrawRadius = width * CLICK_RADIUS_FACTOR;
+		mAddScorePaint.setTextSize(mBarScreenHeight / 3f);
 
 		loadFile();
 	}
@@ -175,6 +181,21 @@ public class IconMatchGame extends
 			}
 			c.drawLine(x0, y0, x1, y1, MISS_LINE_PAINT);
 			c.drawLine(x0, y1, x1, y0, MISS_LINE_PAINT);
+		}
+
+		// draw last hit
+		if (missBlock == null && mGameMachine.mCombo >= 1) {
+			int mHitGoneTick = mGameMachine.mTickGone
+					- mGameMachine.mLastHitTick;
+			int mHitGoneTime = mHitGoneTick * mPeriodMs;
+			if (mHitGoneTime < ADD_SCORE_MS) {
+				float y = lineY
+						+ (mBarScreenHeight + mAddScorePaint.getTextSize())
+						/ 2f;
+				String s = Integer.toString(mGameMachine.mCombo) + "combo +"
+						+ Integer.toString(mGameMachine.mLastHitScoreAdd);
+				c.drawText(s, mScreenWidthPx / 2f, y, mAddScorePaint);
+			}
 		}
 
 		// draw running block
