@@ -6,20 +6,18 @@ import android.view.MotionEvent;
 
 import com.luzi82.game.AbstractState;
 
-public class GameEndState extends AbstractState {
-
-	final IconMatchGame mIconMatchGame;
+public class GameEndState extends AbstractState<IconMatchGame> {
 
 	int mCountDown;
 
 	public GameEndState(IconMatchGame iconMatchGame) {
-		mIconMatchGame = iconMatchGame;
+		super(iconMatchGame);
 	}
 
 	@Override
 	public void draw(Canvas c) {
-		mIconMatchGame.drawGrayLayer(c);
-		mIconMatchGame.drawCenterText(c, "END");
+		mParent.drawGrayLayer(c);
+		mParent.drawCenterText(c, "END");
 	}
 
 	@Override
@@ -35,7 +33,7 @@ public class GameEndState extends AbstractState {
 	@Override
 	public void onTouchEvent(MotionEvent event) {
 		if (mCountDown < 0) {
-			mIconMatchGame.mActivity.finish();
+			mParent.mActivity.finish();
 		}
 	}
 
@@ -55,7 +53,7 @@ public class GameEndState extends AbstractState {
 
 	@Override
 	public void tick() {
-		mCountDown -= mIconMatchGame.mPeriodMs;
+		mCountDown -= mParent.mPeriodMs;
 	}
 
 	@Override

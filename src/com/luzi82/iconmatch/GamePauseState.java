@@ -6,18 +6,16 @@ import android.view.MotionEvent;
 
 import com.luzi82.game.AbstractState;
 
-public class GamePauseState extends AbstractState {
-
-	IconMatchGame mIconMatchGame;
+public class GamePauseState extends AbstractState<IconMatchGame> {
 
 	public GamePauseState(IconMatchGame iconMatchGame) {
-		mIconMatchGame = iconMatchGame;
+		super(iconMatchGame);
 	}
 
 	@Override
 	public void draw(Canvas c) {
-		mIconMatchGame.drawGrayLayer(c);
-		mIconMatchGame.drawCenterText(c, "PAUSE");
+		mParent.drawGrayLayer(c);
+		mParent.drawCenterText(c, "PAUSE");
 	}
 
 	@Override
@@ -32,7 +30,7 @@ public class GamePauseState extends AbstractState {
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
-		mIconMatchGame.setCurrentState(IconMatchGame.STATE_RUN);
+		mParent.setCurrentState(IconMatchGame.STATE_RUN);
 	}
 
 	@Override

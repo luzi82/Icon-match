@@ -13,7 +13,7 @@ import android.graphics.Paint;
 
 import com.luzi82.game.StateGroup;
 
-public class IconMatchGame extends StateGroup {
+public class IconMatchGame extends StateGroup<IconMatchGame, IconMatchGame> {
 
 	final static String STATE_START = "start";
 	final static String STATE_PAUSE = "pause";
@@ -82,6 +82,8 @@ public class IconMatchGame extends StateGroup {
 	// ////////////////////
 
 	public IconMatchGame(IconMatchGameActivity iconMatchGameActivity) {
+		super(null);
+
 		mActivity = iconMatchGameActivity;
 		mPeriodMs = (int) mActivity.getPeriodMs();
 		mGameMachine = new GameLogic(mActivity.getPeriodMs(), mRandom);

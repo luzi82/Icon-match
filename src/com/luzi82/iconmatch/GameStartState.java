@@ -6,20 +6,18 @@ import android.view.MotionEvent;
 
 import com.luzi82.game.AbstractState;
 
-public class GameStartState extends AbstractState {
-
-	final IconMatchGame mIconMatchGame;
+public class GameStartState extends AbstractState<IconMatchGame> {
 
 	int mCountDown;
 
 	public GameStartState(IconMatchGame iconMatchGame) {
-		mIconMatchGame = iconMatchGame;
+		super(iconMatchGame);
 	}
 
 	@Override
 	public void draw(Canvas c) {
-		mIconMatchGame.drawGrayLayer(c);
-		mIconMatchGame.drawCenterText(c, "START");
+		mParent.drawGrayLayer(c);
+		mParent.drawCenterText(c, "START");
 	}
 
 	@Override
@@ -54,9 +52,9 @@ public class GameStartState extends AbstractState {
 
 	@Override
 	public void tick() {
-		mCountDown -= mIconMatchGame.mPeriodMs;
+		mCountDown -= mParent.mPeriodMs;
 		if (mCountDown < 0) {
-			mIconMatchGame.setCurrentState(IconMatchGame.STATE_RUN);
+			mParent.setCurrentState(IconMatchGame.STATE_RUN);
 		}
 	}
 

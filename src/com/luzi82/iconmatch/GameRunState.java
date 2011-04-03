@@ -6,33 +6,28 @@ import android.view.MotionEvent;
 
 import com.luzi82.game.AbstractState;
 
-public class GameRunState extends AbstractState {
+public class GameRunState extends AbstractState<IconMatchGame> {
 
 	final static String STATE_PLAY = "play";
 	final static String STATE_PENALTY = "penalty";
 
-	final private IconMatchGame mIconMatchGame;
 	final private GameLogic mGameMachine;
 
 	public GameRunState(IconMatchGame iconMatchGame, GameLogic gameMachine) {
-		mIconMatchGame = iconMatchGame;
+		super(iconMatchGame);
 		mGameMachine = gameMachine;
-	}
-
-	public IconMatchGame getIconMatchGame() {
-		return mIconMatchGame;
 	}
 
 	@Override
 	public void onGamePause() {
-		mIconMatchGame.setCurrentState(IconMatchGame.STATE_PAUSE);
+		mParent.setCurrentState(IconMatchGame.STATE_PAUSE);
 	}
 
 	@Override
 	public void tick() {
 		mGameMachine.tick();
 		if (mGameMachine.mGameEnd) {
-			mIconMatchGame.setCurrentState(IconMatchGame.STATE_END);
+			mParent.setCurrentState(IconMatchGame.STATE_END);
 		}
 	}
 
@@ -69,9 +64,9 @@ public class GameRunState extends AbstractState {
 	@Override
 	public void onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			int v = (event.getX() < mIconMatchGame.mScreenWidthPx / 2) ? 0 : 1;
+			int v = (event.getX() < mParent.mScreenWidthPx / 2) ? 0 : 1;
 			mGameMachine.killBlock(v);
-			mIconMatchGame.mShowScore = (int) mGameMachine.mScore;
+			mParent.mShowScore = (int) mGameMachine.mScore;
 		}
 	}
 
