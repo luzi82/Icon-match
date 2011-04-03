@@ -35,4 +35,9 @@ public class IconMatchGameActivity extends GameActivity {
 		return R.id.game_view;
 	}
 
+	@Override
+	protected String getTag() {
+		return "icon match";
+	}
+
 }
