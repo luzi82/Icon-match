@@ -73,7 +73,6 @@ public class IconMatchGame extends
 	// game var
 
 	GameLogic mGameMachine;
-	int mShowScore;
 
 	// tick/draw var
 
@@ -153,7 +152,7 @@ public class IconMatchGame extends
 	public void drawBottomBar(Canvas c) {
 		c.drawRect(0, mScreenHeightPx - mBottomScreenHeight, mScreenWidthPx,
 				mScreenHeightPx, BOTTOM_BAR_BACKGROUND);
-		c.drawText(Integer.toString(mShowScore), 0, mScoreY, mScorePaint);
+		c.drawText(Integer.toString(mGameMachine.mScore), 0, mScoreY, mScorePaint);
 		c.drawText(Integer.toString(mGameMachine.mCombo), mScreenWidthPx,
 				mScoreY, mComboPaint);
 	}

@@ -27,7 +27,8 @@ public class GameLogic {
 
 	int mBlockDone = 0;
 
-	float mScore = 0;
+	int mScore = 0;
+	float mScoreFloat = 0;
 	float mScoreBase = 0;
 	public int mCombo = 0;
 	int mMaxCombo = 0;
@@ -113,13 +114,14 @@ public class GameLogic {
 			mPenaltyUnit = mLifeUnit - PENALTY_UNIT;
 			mLifeUnit += BAR_UNIT;
 			mFastReduceUnit += BAR_UNIT;
-			mScoreBase = mScore;
+			mScoreBase = mScoreFloat;
 			mCombo = 0;
 			++mMiss;
 		}
 		mAnswer.removeFirst();
-		mScore = mScoreBase
+		mScoreFloat = mScoreBase
 				+ ((mCombo > 0) ? ((float) (mCombo * Math.log10(mCombo))) : 0f);
+		mScore = (int) (mScoreFloat * 10);
 		buildBlock();
 	}
 

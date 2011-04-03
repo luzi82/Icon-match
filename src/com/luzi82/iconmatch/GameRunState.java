@@ -34,7 +34,6 @@ public class GameRunState extends AbstractState<IconMatchGame> {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			int v = (event.getX() < mParent.mScreenWidthPx / 2) ? 0 : 1;
 			mGameMachine.killBlock(v);
-			mParent.mShowScore = (int) mGameMachine.mScore;
 		}
 	}
 
