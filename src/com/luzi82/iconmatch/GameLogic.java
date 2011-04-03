@@ -34,6 +34,7 @@ public class GameLogic {
 	int mCombo = 0;
 	int mMaxCombo = 0;
 	int mMiss = 0;
+	int mTickGone = 0;
 
 	public float mLifeUnit = LIFE_MAX_UNIT; // 0-100
 	float mFastReduceUnit = LIFE_MAX_UNIT;
@@ -58,8 +59,9 @@ public class GameLogic {
 		if (mGameEnd) {
 			return;
 		}
-		float speed = BAR_UNIT * mPeriodMs
-				* (BASE_SPEED + SPEED_FACTOR * mBlockDone) / 1000;
+		++mTickGone;
+
+		float speed = BAR_UNIT * mPeriodMs * currentSpeed() / 1000;
 
 		buildBlock();
 
@@ -151,6 +153,18 @@ public class GameLogic {
 			mRandomHistory.removeLast();
 		}
 		return ret;
+	}
+
+	int timeGone() {
+		return mPeriodMs * mTickGone;
+	}
+
+	float avgSpeed() {
+		return (((float) (mBlockDone + mMiss)) / ((float) timeGone())) * 1000f;
+	}
+
+	float currentSpeed() {
+		return (BASE_SPEED + SPEED_FACTOR * mBlockDone);
 	}
 
 	public class Block {

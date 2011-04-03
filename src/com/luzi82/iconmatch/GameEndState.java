@@ -1,5 +1,7 @@
 package com.luzi82.iconmatch;
 
+import java.text.DecimalFormat;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,12 +11,16 @@ import com.luzi82.game.AbstractState;
 
 public class GameEndState extends AbstractState<IconMatchGame> {
 
+	static final DecimalFormat TIME_FORMAT = new DecimalFormat("0.00s");
+	static final DecimalFormat SPEED_FORMAT = new DecimalFormat("0.00/s");
+	static final float UNIT_FACTOR = 1f / 30f;
+
 	float mUnit;
 
-	Paint mTitlePaint = new Paint();
-	Paint mItemTitlePaint = new Paint();
-	Paint mItemValuePaint = new Paint();
-	Paint mClickPaint = new Paint();
+	Paint mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	Paint mItemTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	Paint mItemValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	Paint mClickPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	{
 		mTitlePaint.setColor(Color.WHITE);
 		mTitlePaint.setTextAlign(Paint.Align.CENTER);
@@ -30,6 +36,9 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 	String mCorrect;
 	String mMiss;
 	String mMaxCombo;
+	String mTime;
+	String mAvgSpeed;
+	String mEndSpeed;
 
 	public GameEndState(IconMatchGame iconMatchGame) {
 		super(iconMatchGame);
@@ -42,7 +51,7 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		mParent.drawGrayLayer(c);
 
 		float centerX = mParent.getScreenWidth() / 2.0f;
-		float textY = mUnit * 5;
+		float textY = mUnit * 2.5f;
 		float rightX = mParent.getScreenWidth();
 
 		textY += mUnit * 2;
@@ -65,6 +74,18 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		textY += mUnit * 2;
 		c.drawText("Max combo", 0, textY, mItemTitlePaint);
 		c.drawText(mMaxCombo, rightX, textY, mItemValuePaint);
+
+		textY += mUnit * 2;
+		c.drawText("Time", 0, textY, mItemTitlePaint);
+		c.drawText(mTime, rightX, textY, mItemValuePaint);
+
+		textY += mUnit * 2;
+		c.drawText("Avg. Speed", 0, textY, mItemTitlePaint);
+		c.drawText(mAvgSpeed, rightX, textY, mItemValuePaint);
+
+		textY += mUnit * 2;
+		c.drawText("End Speed", 0, textY, mItemTitlePaint);
+		c.drawText(mEndSpeed, rightX, textY, mItemValuePaint);
 
 		textY += mUnit * 1;
 
@@ -100,6 +121,9 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		mCorrect = Integer.toString(mParent.mGameMachine.mBlockDone);
 		mMiss = Integer.toString(mParent.mGameMachine.mMiss);
 		mMaxCombo = Integer.toString(mParent.mGameMachine.mMaxCombo);
+		mTime = TIME_FORMAT.format(mParent.mGameMachine.timeGone() / 1000f);
+		mAvgSpeed = SPEED_FORMAT.format(mParent.mGameMachine.avgSpeed());
+		mEndSpeed = SPEED_FORMAT.format(mParent.mGameMachine.currentSpeed());
 
 		updateSize();
 	}
@@ -111,7 +135,7 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 	}
 
 	private void updateSize() {
-		mUnit = mParent.getScreenHeight() / 24f;
+		mUnit = mParent.getScreenHeight() * UNIT_FACTOR;
 		mTitlePaint.setTextSize(mUnit * 2);
 		mItemTitlePaint.setTextSize(mUnit * 2);
 		mItemValuePaint.setTextSize(mUnit * 2);

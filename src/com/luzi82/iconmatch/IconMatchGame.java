@@ -28,7 +28,7 @@ public class IconMatchGame extends
 	// final static Paint LIFE_LIMIT_PAINT = new Paint();
 	final static Paint DARK_BLOCK_PAINT = new Paint();
 	final static Paint BOTTOM_BAR_BACKGROUND = new Paint();
-	final static Paint CENTER_TEXT_PAINT = new Paint();
+	final static Paint CENTER_TEXT_PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
 	final static Paint MISS_LINE_PAINT = new Paint();
 	static {
 		// LIVE_PAINT.setColor(Color.WHITE);
@@ -62,8 +62,8 @@ public class IconMatchGame extends
 
 	// env cal var
 
-	final Paint mScorePaint = new Paint();
-	final Paint mComboPaint = new Paint();
+	final Paint mScorePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	final Paint mComboPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	{
 		mScorePaint.setColor(Color.WHITE);
 		mScorePaint.setTextAlign(Paint.Align.LEFT);
