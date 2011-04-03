@@ -55,7 +55,7 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		c.drawText(mScore, rightX, textY, mItemValuePaint);
 
 		textY += mUnit * 2;
-		c.drawText("Correct", 0, textY, mItemTitlePaint);
+		c.drawText("Hit", 0, textY, mItemTitlePaint);
 		c.drawText(mCorrect, rightX, textY, mItemValuePaint);
 
 		textY += mUnit * 2;
