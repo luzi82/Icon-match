@@ -68,7 +68,7 @@ public class IconMatchGame extends StateGroup {
 
 	// game var
 
-	GameMachine mGameMachine;
+	GameLogic mGameMachine;
 	int mShowScore;
 
 	// tick/draw var
@@ -80,7 +80,7 @@ public class IconMatchGame extends StateGroup {
 	public IconMatchGame(IconMatchGameActivity iconMatchGameActivity) {
 		mActivity = iconMatchGameActivity;
 		mPeriodMs = (int) mActivity.getPeriodMs();
-		mGameMachine = new GameMachine(mActivity.getPeriodMs(), mRandom);
+		mGameMachine = new GameLogic(mActivity.getPeriodMs(), mRandom);
 
 		addState(STATE_START, new GameStartState(this));
 		addState(STATE_PAUSE, new GamePauseState(this));
@@ -267,10 +267,10 @@ public class IconMatchGame extends StateGroup {
 
 	public void drawBlock(Canvas c) {
 		float startY = mScreenHeightPx
-				- (mGameMachine.mLifeUnit * mBarScreenHeight / GameMachine.BAR_UNIT)
+				- (mGameMachine.mLifeUnit * mBarScreenHeight / GameLogic.BAR_UNIT)
 				- mBottomScreenHeight;
 		float lineY = startY;
-		for (GameMachine.Block v : mGameMachine.mAnswer) {
+		for (GameLogic.Block v : mGameMachine.mAnswer) {
 			float topY = lineY - mBarScreenHeight + 1;
 			c.drawBitmap(mSelectionBitmap[v.left], 0, topY, null);
 			c.drawBitmap(mCenterBitmap[v.center],

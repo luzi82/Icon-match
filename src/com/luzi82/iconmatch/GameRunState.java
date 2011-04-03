@@ -12,9 +12,9 @@ public class GameRunState extends AbstractState {
 	final static String STATE_PENALTY = "penalty";
 
 	final private IconMatchGame mIconMatchGame;
-	final private GameMachine mGameMachine;
+	final private GameLogic mGameMachine;
 
-	public GameRunState(IconMatchGame iconMatchGame, GameMachine gameMachine) {
+	public GameRunState(IconMatchGame iconMatchGame, GameLogic gameMachine) {
 		mIconMatchGame = iconMatchGame;
 		mGameMachine = gameMachine;
 	}

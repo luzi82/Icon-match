@@ -3,7 +3,7 @@ package com.luzi82.iconmatch;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class GameMachine {
+public class GameLogic {
 
 	final public static float BAR_UNIT = 20;
 	final static float LIFE_MAX_UNIT = 80;
@@ -38,7 +38,7 @@ public class GameMachine {
 
 	LinkedList<Integer> mRandomHistory = new LinkedList<Integer>();
 
-	public GameMachine(int periodMs, Random random) {
+	public GameLogic(int periodMs, Random random) {
 		mPeriodMs = periodMs;
 		mRandom = random;
 	}
