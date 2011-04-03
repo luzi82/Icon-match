@@ -51,7 +51,7 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 		mParent.drawGrayLayer(c);
 
 		float centerX = mParent.getScreenWidth() / 2.0f;
-		float textY = mUnit * 2.5f;
+		float textY = mUnit * 5f;
 		float rightX = mParent.getScreenWidth();
 
 		textY += mUnit * 2;
