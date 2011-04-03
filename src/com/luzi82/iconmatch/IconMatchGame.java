@@ -27,6 +27,7 @@ public class IconMatchGame extends StateGroup {
 	// final static Paint LIFE_LIMIT_PAINT = new Paint();
 	final static Paint DARK_BLOCK_PAINT = new Paint();
 	final static Paint BOTTOM_BAR_BACKGROUND = new Paint();
+	final static Paint CENTER_TEXT_PAINT = new Paint();
 	static {
 		// LIVE_PAINT.setColor(Color.WHITE);
 		// INACTIVE_PAINT.setColor(Color.GRAY);
@@ -35,6 +36,9 @@ public class IconMatchGame extends StateGroup {
 		// LIFE_LIMIT_PAINT.setColor(Color.WHITE);
 		BOTTOM_BAR_BACKGROUND.setColor(Color.DKGRAY);
 		DARK_BLOCK_PAINT.setColor(Color.argb(0x7f, 0, 0, 0));
+		CENTER_TEXT_PAINT.setColor(Color.WHITE);
+		CENTER_TEXT_PAINT.setTextAlign(Paint.Align.CENTER);
+		CENTER_TEXT_PAINT.setTextSize(30);
 	}
 
 	final static Random mRandom = new Random();
@@ -155,6 +159,12 @@ public class IconMatchGame extends StateGroup {
 
 	public void drawGrayLayer(Canvas c) {
 		c.drawColor(Color.argb(0x7f, 0, 0, 0));
+	}
+
+	public void drawCenterText(Canvas c, String text) {
+		float x = mScreenWidthPx / 2;
+		float y = (mScreenHeightPx + CENTER_TEXT_PAINT.getTextSize()) / 2;
+		c.drawText(text, x, y, CENTER_TEXT_PAINT);
 	}
 
 	private void loadFile() {

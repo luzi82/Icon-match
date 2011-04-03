@@ -19,6 +19,7 @@ public class GameEndState extends AbstractState {
 	@Override
 	public void draw(Canvas c) {
 		mIconMatchGame.drawGrayLayer(c);
+		mIconMatchGame.drawCenterText(c, "END");
 	}
 
 	@Override

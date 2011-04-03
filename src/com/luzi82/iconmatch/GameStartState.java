@@ -19,6 +19,7 @@ public class GameStartState extends AbstractState {
 	@Override
 	public void draw(Canvas c) {
 		mIconMatchGame.drawGrayLayer(c);
+		mIconMatchGame.drawCenterText(c, "START");
 	}
 
 	@Override
