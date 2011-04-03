@@ -29,6 +29,7 @@ public class IconMatchGame extends
 	final static Paint DARK_BLOCK_PAINT = new Paint();
 	final static Paint BOTTOM_BAR_BACKGROUND = new Paint();
 	final static Paint CENTER_TEXT_PAINT = new Paint();
+	final static Paint MISS_LINE_PAINT = new Paint();
 	static {
 		// LIVE_PAINT.setColor(Color.WHITE);
 		// INACTIVE_PAINT.setColor(Color.GRAY);
@@ -40,6 +41,8 @@ public class IconMatchGame extends
 		CENTER_TEXT_PAINT.setColor(Color.WHITE);
 		CENTER_TEXT_PAINT.setTextAlign(Paint.Align.CENTER);
 		CENTER_TEXT_PAINT.setTextSize(30);
+		MISS_LINE_PAINT.setColor(Color.RED);
+		MISS_LINE_PAINT.setStrokeWidth(5);
 	}
 
 	final static Random mRandom = new Random();
@@ -120,7 +123,7 @@ public class IconMatchGame extends
 	public void draw(Canvas c) {
 		now = System.currentTimeMillis();
 		c.drawColor(Color.BLACK);
-		drawBlock(c);
+		drawBlockList(c);
 		drawBottomBar(c);
 		super.draw(c);
 	}
@@ -131,28 +134,56 @@ public class IconMatchGame extends
 		super.tick();
 	}
 
-	public void drawBlock(Canvas c) {
+	public void drawBlockList(Canvas c) {
 		float startY = mScreenHeightPx
 				- (mGameMachine.mLifeUnit * mBarScreenHeight / GameLogic.BAR_UNIT)
 				- mBottomScreenHeight;
 		float lineY = startY;
+
+		// draw miss block
+		GameLogic.Block missBlock = mGameMachine.mLastMissBlock;
+		if (missBlock != null) {
+			drawBlock(c, missBlock, lineY + mBarScreenHeight);
+			float x0, x1, y0, y1;
+			y0 = lineY;
+			y1 = lineY + mBarScreenHeight;
+			if (missBlock.left != missBlock.center) {
+				x0 = 0;
+				x1 = mBarScreenHeight;
+			} else {
+				x0 = mScreenWidthPx - mBarScreenHeight;
+				x1 = mScreenWidthPx;
+			}
+			c.drawLine(x0, y0, x1, y1, MISS_LINE_PAINT);
+			c.drawLine(x0, y1, x1, y0, MISS_LINE_PAINT);
+		}
+
+		// draw running block
 		for (GameLogic.Block v : mGameMachine.mAnswer) {
-			float topY = lineY - mBarScreenHeight + 1;
-			c.drawBitmap(mSelectionBitmap[v.left], 0, topY, null);
-			c.drawBitmap(mCenterBitmap[v.center],
-					(mScreenWidthPx - mBarScreenHeight) / 2, topY, null);
-			c.drawBitmap(mSelectionBitmap[v.right],
-					(mScreenWidthPx - mBarScreenHeight), topY, null);
+			drawBlock(c, v, lineY);
 			lineY -= mBarScreenHeight;
 		}
-		lineY = startY - mBarScreenHeight;
+
+		// draw dark
+		lineY = mGameMachine.mPenaltyState ? startY
+				: (startY - mBarScreenHeight);
 		c.drawRect(0, 0, mScreenWidthPx, lineY, DARK_BLOCK_PAINT);
+	}
+
+	public void drawBlock(Canvas c, GameLogic.Block b, float bottomY) {
+		float topY = bottomY - mBarScreenHeight;
+		c.drawBitmap(mSelectionBitmap[b.left], 0, topY, null);
+		c.drawBitmap(mCenterBitmap[b.center],
+				(mScreenWidthPx - mBarScreenHeight) / 2, topY, null);
+		c.drawBitmap(mSelectionBitmap[b.right],
+				(mScreenWidthPx - mBarScreenHeight), topY, null);
 	}
 
 	public void drawBottomBar(Canvas c) {
 		c.drawRect(0, mScreenHeightPx - mBottomScreenHeight, mScreenWidthPx,
 				mScreenHeightPx, BOTTOM_BAR_BACKGROUND);
-		c.drawText(Integer.toString(mGameMachine.mScore), 0, mScoreY, mScorePaint);
+		c.drawText(Integer.toString(mGameMachine.mScore), 0, mScoreY,
+				mScorePaint);
 		c.drawText(Integer.toString(mGameMachine.mCombo), mScreenWidthPx,
 				mScoreY, mComboPaint);
 	}

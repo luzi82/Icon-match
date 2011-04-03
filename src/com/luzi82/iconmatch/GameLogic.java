@@ -47,6 +47,8 @@ public class GameLogic {
 	public LinkedList<Block> mAnswer = new LinkedList<Block>();
 	LinkedList<Integer> mRandomHistory = new LinkedList<Integer>();
 
+	Block mLastMissBlock;
+
 	public GameLogic(int periodMs, Random random) {
 		mPeriodMs = periodMs;
 		mRandom = random;
@@ -74,6 +76,7 @@ public class GameLogic {
 		// penalty state
 		if (mPenaltyState && (mLifeUnit < mPenaltyUnit)) {
 			mPenaltyState = false;
+			mLastMissBlock = null;
 		}
 
 		// game over
@@ -122,6 +125,7 @@ public class GameLogic {
 			mFastReduceUnit += BAR_UNIT;
 			mScoreBase = mScoreFloat;
 			mCombo = 0;
+			mLastMissBlock = mAnswer.getFirst();
 			++mMiss;
 		}
 		mAnswer.removeFirst();
