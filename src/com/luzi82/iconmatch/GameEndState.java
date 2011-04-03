@@ -34,7 +34,9 @@ public class GameEndState extends AbstractState {
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
-		// do nothing
+		if (mCountDown < 0) {
+			mIconMatchGame.mActivity.finish();
+		}
 	}
 
 	@Override
@@ -54,9 +56,6 @@ public class GameEndState extends AbstractState {
 	@Override
 	public void tick() {
 		mCountDown -= mIconMatchGame.mPeriodMs;
-		if (mCountDown < 0) {
-			mIconMatchGame.mActivity.finish();
-		}
 	}
 
 	@Override
