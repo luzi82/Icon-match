@@ -30,6 +30,8 @@ public class GameLogic {
 	float mScore = 0;
 	float mScoreBase = 0;
 	public int mCombo = 0;
+	int mMaxCombo = 0;
+	int mMiss = 0;
 
 	public boolean mPenaltyState = false;
 	public boolean mGameEnd = false;
@@ -103,6 +105,9 @@ public class GameLogic {
 			}
 			++mBlockDone;
 			++mCombo;
+			if (mCombo > mMaxCombo) {
+				mMaxCombo = mCombo;
+			}
 		} else {
 			mPenaltyState = true;
 			mPenaltyUnit = mLifeUnit - PENALTY_UNIT;
@@ -110,6 +115,7 @@ public class GameLogic {
 			mFastReduceUnit += BAR_UNIT;
 			mScoreBase = mScore;
 			mCombo = 0;
+			++mMiss;
 		}
 		mAnswer.removeFirst();
 		mScore = mScoreBase
