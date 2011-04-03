@@ -33,7 +33,7 @@ public class GameEndState extends AbstractState<IconMatchGame> {
 	@Override
 	public void onTouchEvent(MotionEvent event) {
 		if (mCountDown < 0) {
-			mParent.mActivity.finish();
+			mParent.getParent().finish();
 		}
 	}
 
