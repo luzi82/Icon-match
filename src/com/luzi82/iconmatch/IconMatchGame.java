@@ -1,7 +1,9 @@
 package com.luzi82.iconmatch;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.zip.ZipException;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -137,7 +139,15 @@ public class IconMatchGame extends
 		mClickDrawRadius = width * CLICK_RADIUS_FACTOR;
 		mAddScorePaint.setTextSize(mBarScreenHeight / 3f);
 
-		loadFile();
+		try {
+			loadFile();
+		} catch (ZipException e) {
+			e.printStackTrace();
+			mParent.finish();
+		} catch (IOException e) {
+			e.printStackTrace();
+			mParent.finish();
+		}
 	}
 
 	@Override
@@ -267,8 +277,8 @@ public class IconMatchGame extends
 		c.drawText(text, x, y, CENTER_TEXT_PAINT);
 	}
 
-	private void loadFile() {
-		mIconPack = IconPack.load("/sdcard/IconMatch/MadokaRune",
+	private void loadFile() throws ZipException, IOException {
+		mIconPack = IconPack.load("/sdcard/IconMatch/MadokaRune.zip",
 				mBarScreenHeight, mBarScreenHeight);
 		mGameMachine.mSelectionSize = mIconPack.mSelectionSize;
 		mGameMachine.buildBlock();
