@@ -20,6 +20,14 @@ public class IconPackEntry {
 
 	String title;
 
+	String id;
+
+	String ver;
+
+	int appvermin = -1;
+
+	int appvermax = -1;
+
 	String filename; // absolute
 
 	Type type;
@@ -49,7 +57,7 @@ public class IconPackEntry {
 	}
 
 	public static IconPackEntry get(String filename) {
-		if(filename==null){
+		if (filename == null) {
 			throw new NullPointerException();
 		}
 		File iconPackFile = new File(filename);
@@ -142,7 +150,11 @@ public class IconPackEntry {
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
 			if (localName.equals("IconMatchPack")) {
-				entry.title = atts.getValue("", "name");
+				entry.title = atts.getValue("", "title");
+				entry.id = atts.getValue("", "id");
+				entry.ver = atts.getValue("", "ver");
+				entry.appvermin = parseInt(atts.getValue("", "appvermin"), -1);
+				entry.appvermax = parseInt(atts.getValue("", "appvermax"), -1);
 				success = true;
 			}
 		}
@@ -156,6 +168,16 @@ public class IconPackEntry {
 
 	enum Type {
 		DIR, ZIP
+	}
+
+	static int parseInt(String s, int def) {
+		if (s == null)
+			return def;
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return def;
+		}
 	}
 
 }
