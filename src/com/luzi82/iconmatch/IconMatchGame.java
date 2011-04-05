@@ -1,14 +1,10 @@
 package com.luzi82.iconmatch;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.Random;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import com.luzi82.game.StateGroup;
@@ -79,8 +75,9 @@ public class IconMatchGame extends
 	int mBarScreenHeight;
 	// int mScreenBarCount;
 	int mBottomScreenHeight;
-	Bitmap[] mSelectionBitmap;
-	Bitmap[] mCenterBitmap;
+	// Bitmap[] mSelectionBitmap;
+	// Bitmap[] mCenterBitmap;
+	IconPack mIconPack;
 
 	float mClickDrawRadius;
 
@@ -212,10 +209,10 @@ public class IconMatchGame extends
 
 	public void drawBlock(Canvas c, GameLogic.Block b, float bottomY) {
 		float topY = bottomY - mBarScreenHeight;
-		c.drawBitmap(mSelectionBitmap[b.left], 0, topY, null);
-		c.drawBitmap(mCenterBitmap[b.center],
+		c.drawBitmap(mIconPack.mSelectionBitmap[b.left], 0, topY, null);
+		c.drawBitmap(mIconPack.mCenterBitmap[b.center],
 				(mScreenWidthPx - mBarScreenHeight) / 2, topY, null);
-		c.drawBitmap(mSelectionBitmap[b.right],
+		c.drawBitmap(mIconPack.mSelectionBitmap[b.right],
 				(mScreenWidthPx - mBarScreenHeight), topY, null);
 	}
 
@@ -271,52 +268,10 @@ public class IconMatchGame extends
 	}
 
 	private void loadFile() {
-		LinkedList<Bitmap> aBitmapList = new LinkedList<Bitmap>();
-		LinkedList<Bitmap> bBitmapList = new LinkedList<Bitmap>();
-
-		String path = "/sdcard/IconMatch/MadokaRune";
-		File bitmapFolder = new File(path);
-		String[] folderContent = bitmapFolder.list();
-		for (String filename : folderContent) {
-			if (!filename.endsWith(".a.png"))
-				continue;
-			String prefix = filename.substring(0, filename.length() - 6);
-			String aFilename = path + File.separator + prefix + ".a.png";
-			String bFilename = path + File.separator + prefix + ".b.png";
-			if (!new File(aFilename).exists())
-				continue;
-			if (!new File(bFilename).exists())
-				continue;
-			Bitmap aBitmap = BitmapFactory.decodeFile(aFilename);
-			aBitmap = resize(aBitmap, mBarScreenHeight, mBarScreenHeight);
-			aBitmapList.add(aBitmap);
-			Bitmap bBitmap = BitmapFactory.decodeFile(bFilename);
-			bBitmap = resize(bBitmap, mBarScreenHeight, mBarScreenHeight);
-			bBitmapList.add(bBitmap);
-		}
-
-		mCenterBitmap = aBitmapList.toArray(new Bitmap[0]);
-		mSelectionBitmap = bBitmapList.toArray(new Bitmap[0]);
-
-		mGameMachine.mSelectionSize = aBitmapList.size();
+		mIconPack = IconPack.load("/sdcard/IconMatch/MadokaRune",
+				mBarScreenHeight, mBarScreenHeight);
+		mGameMachine.mSelectionSize = mIconPack.mSelectionSize;
 		mGameMachine.buildBlock();
-
-	}
-
-	private Bitmap resize(Bitmap bitmap, int targetWidth, int targetHeight) {
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-
-		float scaleWidth = ((float) targetWidth) / width;
-		float scaleHeight = ((float) targetHeight) / height;
-
-		Matrix matrix = new Matrix();
-		matrix.postScale(scaleWidth, scaleHeight);
-
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height,
-				matrix, true);
-
-		return resizedBitmap;
 	}
 
 	static class ClickDraw {
