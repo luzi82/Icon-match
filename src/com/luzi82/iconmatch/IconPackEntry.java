@@ -33,7 +33,7 @@ public class IconPackEntry {
 
 	Type type;
 
-	public static List<IconPackEntry> list(int appver) {
+	public static List<IconPackEntry> listDisk(int appver) {
 		List<IconPackEntry> ret = new LinkedList<IconPackEntry>();
 		File externalStorageDirectory = Environment
 				.getExternalStorageDirectory();

@@ -26,7 +26,7 @@ public class StartGameMenuActivity extends PreferenceActivity {
 	protected void onResume() {
 		super.onResume();
 
-		List<IconPackEntry> iconPackEntryList = IconPackEntry.list(getAppVer());
+		List<IconPackEntry> iconPackEntryList = IconPackEntry.listDisk(getAppVer());
 
 		List<String> packEntriesList = new LinkedList<String>();
 		List<String> packEntriesValueList = new LinkedList<String>();
