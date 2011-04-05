@@ -20,53 +20,64 @@ public class IconPack {
 
 	public int mSelectionSize;
 
-	public static IconPack load(String path, int width, int height)
+	public static IconPack load(String filename, int width, int height)
+			throws ZipException, IOException {
+		IconPackEntry ipe = IconPackEntry.get(filename);
+		return load(ipe, width, height);
+	}
+
+	public static IconPack load(IconPackEntry entry, int width, int height)
 			throws ZipException, IOException {
 		LinkedList<Bitmap> aBitmapList = new LinkedList<Bitmap>();
 		LinkedList<Bitmap> bBitmapList = new LinkedList<Bitmap>();
 
-		File file = new File(path);
-		if (file.isDirectory()) {
-			String[] folderContent = file.list();
-			for (String filename : folderContent) {
-				if (!filename.endsWith(".a.png"))
-					continue;
-				String prefix = filename.substring(0, filename.length() - 6);
-				String aFilename = path + File.separator + prefix + ".a.png";
-				String bFilename = path + File.separator + prefix + ".b.png";
-				if (!new File(aFilename).exists())
-					continue;
-				if (!new File(bFilename).exists())
-					continue;
-				Bitmap aBitmap = BitmapFactory.decodeFile(aFilename);
-				aBitmap = resize(aBitmap, width, height);
-				aBitmapList.add(aBitmap);
-				Bitmap bBitmap = BitmapFactory.decodeFile(bFilename);
-				bBitmap = resize(bBitmap, width, height);
-				bBitmapList.add(bBitmap);
-			}
-		} else {
-			ZipFile zipFile = new ZipFile(file);
+		if (entry.type == IconPackEntry.Type.ZIP) {
+			ZipFile zipFile = new ZipFile(new File(entry.filename));
 			Enumeration<? extends ZipEntry> zee = zipFile.entries();
 			while (zee.hasMoreElements()) {
 				ZipEntry zea = zee.nextElement();
 				String filename = zea.getName();
-				if(!zea.getName().endsWith(".a.png"))
+				if (!zea.getName().endsWith(".a.png"))
 					continue;
 				String prefix = filename.substring(0, filename.length() - 6);
 				String bFilename = prefix + ".b.png";
 				ZipEntry zeb = zipFile.getEntry(bFilename);
-				if(zeb==null){
+				if (zeb == null) {
 					continue;
 				}
-				Bitmap aBitmap = BitmapFactory.decodeStream(zipFile.getInputStream(zea));
+				Bitmap aBitmap = BitmapFactory.decodeStream(zipFile
+						.getInputStream(zea));
 				aBitmap = resize(aBitmap, width, height);
 				aBitmapList.add(aBitmap);
-				Bitmap bBitmap = BitmapFactory.decodeStream(zipFile.getInputStream(zeb));
+				Bitmap bBitmap = BitmapFactory.decodeStream(zipFile
+						.getInputStream(zeb));
 				bBitmap = resize(bBitmap, width, height);
 				bBitmapList.add(bBitmap);
 			}
 		}
+
+		// File file = new File(path);
+		// if (file.isDirectory()) {
+		// String[] folderContent = file.list();
+		// for (String filename : folderContent) {
+		// if (!filename.endsWith(".a.png"))
+		// continue;
+		// String prefix = filename.substring(0, filename.length() - 6);
+		// String aFilename = path + File.separator + prefix + ".a.png";
+		// String bFilename = path + File.separator + prefix + ".b.png";
+		// if (!new File(aFilename).exists())
+		// continue;
+		// if (!new File(bFilename).exists())
+		// continue;
+		// Bitmap aBitmap = BitmapFactory.decodeFile(aFilename);
+		// aBitmap = resize(aBitmap, width, height);
+		// aBitmapList.add(aBitmap);
+		// Bitmap bBitmap = BitmapFactory.decodeFile(bFilename);
+		// bBitmap = resize(bBitmap, width, height);
+		// bBitmapList.add(bBitmap);
+		// }
+		// } else {
+		// }
 
 		IconPack ret = new IconPack();
 

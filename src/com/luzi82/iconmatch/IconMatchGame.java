@@ -54,6 +54,7 @@ public class IconMatchGame extends
 	// instance const
 
 	final int mPeriodMs;
+	final String mFilename;
 
 	// device input var
 
@@ -104,10 +105,12 @@ public class IconMatchGame extends
 
 	// ////////////////////
 
-	public IconMatchGame(IconMatchGameActivity iconMatchGameActivity) {
+	public IconMatchGame(IconMatchGameActivity iconMatchGameActivity,
+			String iconPackFilename) {
 		super(iconMatchGameActivity);
 
 		mPeriodMs = (int) mParent.getPeriodMs();
+		mFilename = iconPackFilename;
 		mGameMachine = new GameLogic(mParent.getPeriodMs(), mRandom);
 
 		addState(STATE_START, new GameStartState(this));
@@ -278,8 +281,8 @@ public class IconMatchGame extends
 	}
 
 	private void loadFile() throws ZipException, IOException {
-		mIconPack = IconPack.load("/sdcard/IconMatch/MadokaRune.zip",
-				mBarScreenHeight, mBarScreenHeight);
+		mIconPack = IconPack
+				.load(mFilename, mBarScreenHeight, mBarScreenHeight);
 		mGameMachine.mSelectionSize = mIconPack.mSelectionSize;
 		mGameMachine.buildBlock();
 	}
