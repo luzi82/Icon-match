@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -23,7 +26,7 @@ public class StartGameMenuActivity extends PreferenceActivity {
 	protected void onResume() {
 		super.onResume();
 
-		List<IconPackEntry> iconPackEntryList = IconPackEntry.list();
+		List<IconPackEntry> iconPackEntryList = IconPackEntry.list(getAppVer());
 
 		List<String> packEntriesList = new LinkedList<String>();
 		List<String> packEntriesValueList = new LinkedList<String>();
@@ -57,6 +60,19 @@ public class StartGameMenuActivity extends PreferenceActivity {
 			startActivity(intent);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
+	}
+
+	int getAppVer() {
+		PackageManager pm = getPackageManager();
+		String pn = getPackageName();
+		try {
+			PackageInfo pi = pm.getPackageInfo(pn, 0);
+			return pi.versionCode;
+		} catch (NameNotFoundException e1) {
+			e1.printStackTrace();
+			finish();
+			return -1;
+		}
 	}
 
 	// @Override

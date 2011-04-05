@@ -33,7 +33,7 @@ public class IconPackEntry {
 
 	Type type;
 
-	public static List<IconPackEntry> list() {
+	public static List<IconPackEntry> list(int appver) {
 		List<IconPackEntry> ret = new LinkedList<IconPackEntry>();
 		File externalStorageDirectory = Environment
 				.getExternalStorageDirectory();
@@ -49,9 +49,16 @@ public class IconPackEntry {
 		for (String iconPackFilename : iconPackFilenameList) {
 			IconPackEntry entry = get(iconPackDirectory.getAbsolutePath()
 					+ File.separator + iconPackFilename);
-			if (entry != null) {
-				ret.add(entry);
+			if (entry == null) {
+				continue;
 			}
+			if ((entry.appvermin >= 0) && (entry.appvermin > appver)) {
+				continue;
+			}
+			if ((entry.appvermax >= 0) && (entry.appvermax < appver)) {
+				continue;
+			}
+			ret.add(entry);
 		}
 
 		return ret;
