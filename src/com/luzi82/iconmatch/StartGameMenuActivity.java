@@ -43,6 +43,7 @@ public class StartGameMenuActivity extends PreferenceActivity {
 		if (!iconPackEntryList.isEmpty()) {
 			packPreference.setDefaultValue(packEntriesValueList.get(0));
 		} else {
+			packPreference.setEnabled(false);
 			Preference startPreference = findPreference("startgamemenu_start");
 			startPreference.setEnabled(false);
 		}
