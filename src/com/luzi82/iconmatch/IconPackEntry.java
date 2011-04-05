@@ -14,6 +14,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import android.os.Environment;
+import android.util.Log;
 import android.util.Xml;
 
 public class IconPackEntry {
@@ -178,6 +179,18 @@ public class IconPackEntry {
 		} catch (NumberFormatException e) {
 			return def;
 		}
+	}
+
+	void trace() {
+		logd("title = " + title);
+		logd("id = " + id);
+		logd("ver = " + ver);
+		logd("appvermin = " + appvermin);
+		logd("appvermax = " + appvermax);
+	}
+
+	static void logd(String v) {
+		Log.d("IconMatch", v);
 	}
 
 }
