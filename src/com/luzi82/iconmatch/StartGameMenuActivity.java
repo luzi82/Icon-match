@@ -12,8 +12,12 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceChangeListener;
 
 public class StartGameMenuActivity extends PreferenceActivity {
+
+	String[] mEntries;
+	String[] mEntriesValue;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,27 +30,55 @@ public class StartGameMenuActivity extends PreferenceActivity {
 	protected void onResume() {
 		super.onResume();
 
-		List<IconPackEntry> iconPackEntryList = IconPackEntry.listDisk(getAppVer());
-
 		List<String> packEntriesList = new LinkedList<String>();
 		List<String> packEntriesValueList = new LinkedList<String>();
+
+		List<IconPackEntry> iconPackEntryList = IconPackEntry
+				.listDisk(getAppVer());
 
 		for (IconPackEntry ipe : iconPackEntryList) {
 			packEntriesList.add(ipe.title);
 			packEntriesValueList.add(ipe.filename);
 		}
 
+		mEntries = packEntriesList.toArray(new String[0]);
+		mEntriesValue = packEntriesValueList.toArray(new String[0]);
+
 		ListPreference packPreference = (ListPreference) findPreference("startgamemenu_pack");
-		packPreference.setEntries(packEntriesList.toArray(new String[0]));
-		packPreference.setEntryValues(packEntriesValueList
-				.toArray(new String[0]));
+		packPreference
+				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+					@Override
+					public boolean onPreferenceChange(Preference preference,
+							Object newValue) {
+						updateIconPreferenceSummury((String) newValue);
+						return true;
+					}
+				});
+		packPreference.setEntries(mEntries);
+		packPreference.setEntryValues(mEntriesValue);
 		if (!iconPackEntryList.isEmpty()) {
-			packPreference.setDefaultValue(packEntriesValueList.get(0));
+			if (packPreference.getValue() == null) {
+				packPreference.setValue(packEntriesValueList.get(0));
+			}
 		} else {
 			packPreference.setEnabled(false);
 			Preference startPreference = findPreference("startgamemenu_start");
 			startPreference.setEnabled(false);
 		}
+		updateIconPreferenceSummury(packPreference.getValue());
+	}
+
+	protected void updateIconPreferenceSummury(String newValue) {
+		int i;
+		for (i = 0; i < mEntriesValue.length; ++i) {
+			if (mEntriesValue[i].equals(newValue)) {
+				break;
+			}
+		}
+		if (i >= mEntriesValue.length)
+			return;
+		ListPreference packPreference = (ListPreference) findPreference("startgamemenu_pack");
+		packPreference.setSummary(mEntries[i]);
 	}
 
 	@Override
@@ -61,6 +93,13 @@ public class StartGameMenuActivity extends PreferenceActivity {
 			startActivity(intent);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
+	}
+
+	@Override
+	public void onContentChanged() {
+		super.onContentChanged();
+
+		IconMatch.logd("StartGameMenuActivity.onContentChanged");
 	}
 
 	int getAppVer() {
