@@ -15,6 +15,8 @@ public class MainMenuActivity extends PreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		IconMatch.initIconPackSaveFolder();
+
 		addPreferencesFromResource(R.xml.mainmenu);
 	}
 
@@ -22,11 +24,13 @@ public class MainMenuActivity extends PreferenceActivity {
 	protected void onResume() {
 		super.onResume();
 
-		List<IconPackEntry> iconPackEntryList = IconPackEntry.listDisk(getAppVer());
-		if (iconPackEntryList.isEmpty()) {
-			Preference playPreference = findPreference("mainmenu_play");
-			playPreference.setEnabled(false);
-		}
+		IconMatch.logd("MainMenuActivity.onResume");
+
+		List<IconPackEntry> iconPackEntryList = IconPackEntry
+				.listDisk(getAppVer());
+
+		Preference playPreference = findPreference("mainmenu_play");
+		playPreference.setEnabled(!iconPackEntryList.isEmpty());
 	}
 
 	int getAppVer() {
