@@ -56,7 +56,6 @@ public class DownloadIconPackActivity extends ListActivity {
 				this,
 				(fd.state == State.SUCCESS) ? R.string.download_success
 						: R.string.download_fail, Toast.LENGTH_SHORT).show();
-		// Log.d("IconMatch", fd.state.toString());
 	}
 
 	int getAppVer() {
