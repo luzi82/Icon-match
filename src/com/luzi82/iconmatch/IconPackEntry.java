@@ -1,9 +1,15 @@
 package com.luzi82.iconmatch;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -31,6 +37,10 @@ public class IconPackEntry {
 
 	String filename; // absolute
 
+	enum Type {
+		DIR, ZIP
+	}
+
 	Type type;
 
 	public static List<IconPackEntry> listDisk(int appver) {
@@ -52,10 +62,7 @@ public class IconPackEntry {
 			if (entry == null) {
 				continue;
 			}
-			if ((entry.appvermin >= 0) && (entry.appvermin > appver)) {
-				continue;
-			}
-			if ((entry.appvermax >= 0) && (entry.appvermax < appver)) {
+			if (!entry.acceptAppVer(appver)) {
 				continue;
 			}
 			ret.add(entry);
@@ -78,6 +85,32 @@ public class IconPackEntry {
 		}
 
 		return null;
+	}
+
+	public static List<IconPackEntry> listOnline(String urlSpec, int appver) {
+		List<IconPackEntry> ret = new LinkedList<IconPackEntry>();
+		try {
+			URL url = new URL(urlSpec);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			InputStream is = new BufferedInputStream(conn.getInputStream());
+
+			DownloadXmlContentHandler dxch = new DownloadXmlContentHandler();
+			Xml.parse(is, Xml.Encoding.UTF_8, dxch);
+
+			for (IconPackEntry ipe : dxch.entryList) {
+				if (!ipe.acceptAppVer(appver)) {
+					continue;
+				}
+				ret.add(ipe);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} catch (SAXException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return ret;
 	}
 
 	private static IconPackEntry loadZipEntry(File file) {
@@ -174,8 +207,73 @@ public class IconPackEntry {
 
 	}
 
-	enum Type {
-		DIR, ZIP
+	private static class DownloadXmlContentHandler implements ContentHandler {
+
+		List<IconPackEntry> entryList = new LinkedList<IconPackEntry>();
+
+		@Override
+		public void characters(char[] ch, int start, int length)
+				throws SAXException {
+		}
+
+		@Override
+		public void endDocument() throws SAXException {
+		}
+
+		@Override
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+		}
+
+		@Override
+		public void endPrefixMapping(String prefix) throws SAXException {
+		}
+
+		@Override
+		public void ignorableWhitespace(char[] ch, int start, int length)
+				throws SAXException {
+		}
+
+		@Override
+		public void processingInstruction(String target, String data)
+				throws SAXException {
+		}
+
+		@Override
+		public void setDocumentLocator(Locator locator) {
+		}
+
+		@Override
+		public void skippedEntity(String name) throws SAXException {
+		}
+
+		@Override
+		public void startDocument() throws SAXException {
+		}
+
+		@Override
+		public void startElement(String uri, String localName, String qName,
+				Attributes atts) throws SAXException {
+			if (localName.equals("IconMatchPack")) {
+				IconPackEntry entry = new IconPackEntry();
+				entry.title = atts.getValue("", "title");
+				entry.id = atts.getValue("", "id");
+				entry.ver = atts.getValue("", "ver");
+				entry.appvermin = parseInt(atts.getValue("", "appvermin"), -1);
+				entry.appvermax = parseInt(atts.getValue("", "appvermax"), -1);
+				entry.filename = atts.getValue("", "url");
+				entry.type = Type.ZIP;
+				entryList.add(entry);
+
+				entry.trace();
+			}
+		}
+
+		@Override
+		public void startPrefixMapping(String prefix, String uri)
+				throws SAXException {
+		}
+
 	}
 
 	static int parseInt(String s, int def) {
@@ -198,6 +296,28 @@ public class IconPackEntry {
 
 	static void logd(String v) {
 		Log.d("IconMatch", v);
+	}
+
+	boolean acceptAppVer(int appver) {
+		if ((appvermin >= 0) && (appvermin > appver)) {
+			return false;
+		}
+		if ((appvermax >= 0) && (appvermax < appver)) {
+			return false;
+		}
+		return true;
+	}
+
+	Map<String, String> toMap() {
+		TreeMap<String, String> ret = new TreeMap<String, String>();
+		ret.put("title", title);
+		ret.put("id", id);
+		ret.put("ver", ver);
+		ret.put("appvermin", Integer.toString(appvermin));
+		ret.put("appvermax", Integer.toString(appvermax));
+		ret.put("filename", filename);
+		ret.put("type", type.toString());
+		return ret;
 	}
 
 }
