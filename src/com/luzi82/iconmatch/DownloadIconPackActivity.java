@@ -23,7 +23,7 @@ public class DownloadIconPackActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		List<IconPackEntry> onlineIconPackList = IconPackEntry
-				.listOnline("http://www.luzi82.com/~luzi82/iconmatch/data.php",
+				.listOnline("http://www.luzi82.com/~luzi82/projects/iconmatch/data.php",
 						getAppVer());
 
 		if (onlineIconPackList != null) {
