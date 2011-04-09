@@ -113,7 +113,7 @@ public class GameLogic {
 			return 0;
 		}
 		int ret;
-		Block first = mAnswer.getFirst();
+		Block first = mAnswer.removeFirst();
 		if ((pos == 0) == (first.center == first.left)) {
 			mLifeUnit += BAR_UNIT;
 			mFastReduceUnit += BAR_UNIT;
@@ -134,11 +134,10 @@ public class GameLogic {
 			mFastReduceUnit += BAR_UNIT;
 			mScoreBase = mScoreFloat;
 			mCombo = 0;
-			mLastMissBlock = mAnswer.getFirst();
+			mLastMissBlock = first;
 			++mMiss;
 			ret = -1;
 		}
-		mAnswer.removeFirst();
 		mScoreFloat = mScoreBase
 				+ ((mCombo > 0) ? ((float) (mCombo * Math.log10(mCombo))) : 0f);
 		int oldScore = mScore;
