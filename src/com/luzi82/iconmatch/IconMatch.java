@@ -6,7 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 
 public class IconMatch {
-	
+
 	public static void initIconPackSaveFolder() {
 		File file = new File(getIconPackSaveFolderFilename());
 		file.mkdirs();
@@ -35,9 +35,17 @@ public class IconMatch {
 		return externalStorageDirectory.getAbsolutePath() + File.separator
 				+ "IconMatch";
 	}
-	
-	public static void logd(String v){
-		Log.d("IconMatch",v);
+
+	public static void logd(String v) {
+		Log.d("IconMatch", v);
+	}
+
+	public static boolean getExternalWritable() {
+		String state = Environment.getExternalStorageState();
+		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			return true;
+		}
+		return false;
 	}
 
 }

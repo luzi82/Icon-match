@@ -22,9 +22,9 @@ public class DownloadIconPackActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		List<IconPackEntry> onlineIconPackList = IconPackEntry
-				.listOnline("http://www.luzi82.com/~luzi82/projects/iconmatch/data.php",
-						getAppVer());
+		List<IconPackEntry> onlineIconPackList = IconPackEntry.listOnline(
+				"http://www.luzi82.com/~luzi82/projects/iconmatch/data.php",
+				getAppVer());
 
 		if (onlineIconPackList != null) {
 			List<Map<String, String>> lmss = new LinkedList<Map<String, String>>();
@@ -42,6 +42,12 @@ public class DownloadIconPackActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+
+		if (!IconMatch.getExternalWritable()) {
+			Toast.makeText(this, R.string.external_storage_notexist,
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
 
 		SimpleAdapter sa = (SimpleAdapter) getListAdapter();
 		Map<String, String> mss = (Map<String, String>) sa.getItem(position);
