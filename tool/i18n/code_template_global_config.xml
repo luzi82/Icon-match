@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<code_template_global_config>
+<!--	<module>guri.codetemplate.standardmodule.ElementLoop</module> -->
+<!--	<module>guri.codetemplate.standardmodule.Variable</module> -->
+	<module>guri.codetemplate.standardmodule.DateTime</module>
+	<module>guri.codetemplate.standardmodule.Zero</module>
+	<module>guri.codetemplate.standardmodule.Parameter</module>
+	<module>guri.codetemplate.standardmodule.FileOutput</module>
+	<module>guri.codetemplate.standardmodule.HelloWorld</module>
+	<module>guri.codetemplate.standardmodule.ods.OdsInputModule</module>
+	<module>guri.codetemplate.standardmodule.datatable.DataTableModule</module>
+	<module>guri.codetemplate.standardmodule.Replace</module>
+	<module>guri.codetemplate.standardmodule.UnXml</module>
+</code_template_global_config>

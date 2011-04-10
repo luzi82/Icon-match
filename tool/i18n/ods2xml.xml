@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<template><zero>
+<ods id="tid_00">
+	<file>i18n.ods</file>
+	<scope>
+		<for_view src="tid_00" did="0" id="tid_01">
+			<for_view src="tid_01" did="1" id="tid_02">
+				<file_out mkdir="1"><file>res/<view_coor src="tid_02" did="1"/>/<parameter id="0"/>.xml</file>
+<scope>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+
+    &lt;string name="i18n_version"&gt;<datetime format="yyyyMMddHHmmss"/>&lt;/string&gt;
+
+<for_view src="tid_02" did="2" id="tid_03">    &lt;string name="<view_coor src="tid_03" did="2"/>"&gt;<unxml><replace><pair><from>\</from><to>\\</to></pair><pair><from>'</from><to>\'</to></pair><pair><from>
+</from><to>\n</to></pair><scope><view_value src="tid_03"/></scope></replace></unxml>&lt;/string&gt;
+</for_view>&lt;/resources&gt;
+</scope>
+				</file_out>
+			</for_view>
+		</for_view>
+	</scope>
+</ods>
+</zero></template>

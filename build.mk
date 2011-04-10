@@ -1,12 +1,16 @@
-NDK_PATH=/home/luzi82/project/android/software/android-ndk-r3
-ANDROIDKIT_PATH=/home/luzi82/project/android/tool/android_kit
-
 .PHONY : all clean
+
+TOOL_PATH = tool
+TOOL_I18N_PATH = ${TOOL_PATH}/i18n
 
 all : .i18n_timestamp
 
 .i18n_timestamp : i18n.ods
-	${ANDROIDKIT_PATH}/ods2xml.sh iconmatch_loc_strings
+	java \
+		-jar ${TOOL_I18N_PATH}/CodeTemplate.jar \
+		-g ${TOOL_I18N_PATH}/code_template_global_config.xml \
+		-t ${TOOL_I18N_PATH}/ods2xml.xml \
+		iconmatch_loc_strings
 	touch .i18n_timestamp
 
 clean :
