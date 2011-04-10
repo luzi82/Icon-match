@@ -57,7 +57,9 @@ public class StartGameMenuActivity extends PreferenceActivity {
 		packPreference.setEntries(mEntries);
 		packPreference.setEntryValues(mEntriesValue);
 		if (!iconPackEntryList.isEmpty()) {
-			if (packPreference.getValue() == null) {
+			if ((packPreference.getValue() == null)
+					|| (!packEntriesValueList.contains(packPreference
+							.getValue()))) {
 				packPreference.setValue(packEntriesValueList.get(0));
 			}
 		} else {
