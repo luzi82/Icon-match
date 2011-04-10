@@ -10,7 +10,8 @@ import java.util.zip.ZipFile;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+
+import com.luzi82.game.Util;
 
 public class IconPack {
 
@@ -51,11 +52,11 @@ public class IconPack {
 				}
 				Bitmap aBitmap = BitmapFactory.decodeStream(zipFile
 						.getInputStream(zea));
-				aBitmap = resize(aBitmap, width, height);
+				aBitmap = Util.resize(aBitmap, width, height);
 				aBitmapList.add(aBitmap);
 				Bitmap bBitmap = BitmapFactory.decodeStream(zipFile
 						.getInputStream(zeb));
-				bBitmap = resize(bBitmap, width, height);
+				bBitmap = Util.resize(bBitmap, width, height);
 				bBitmapList.add(bBitmap);
 			}
 		}
@@ -92,23 +93,6 @@ public class IconPack {
 		ret.mSelectionSize = aBitmapList.size();
 
 		return ret;
-	}
-
-	private static Bitmap resize(Bitmap bitmap, int targetWidth,
-			int targetHeight) {
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-
-		float scaleWidth = ((float) targetWidth) / width;
-		float scaleHeight = ((float) targetHeight) / height;
-
-		Matrix matrix = new Matrix();
-		matrix.postScale(scaleWidth, scaleHeight);
-
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height,
-				matrix, true);
-
-		return resizedBitmap;
 	}
 
 }

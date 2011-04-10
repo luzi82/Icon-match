@@ -8,3 +8,4 @@ uninstall.sh
 res/values*/iconmatch_loc_strings.xml
 /game_engine
 /IconMatch.apk
+res/drawable/pause_button.png

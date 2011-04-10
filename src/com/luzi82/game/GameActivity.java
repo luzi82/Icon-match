@@ -52,4 +52,14 @@ public abstract class GameActivity extends Activity implements StateParent {
 
 	abstract protected String getTag();
 
+	@Override
+	public int getHeight() {
+		return view.getHeight();
+	}
+
+	@Override
+	public int getWidth() {
+		return view.getWidth();
+	}
+
 }

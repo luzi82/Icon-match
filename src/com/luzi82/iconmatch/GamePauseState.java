@@ -19,7 +19,9 @@ public class GamePauseState extends AbstractState<IconMatchGame> {
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
-		mParent.setCurrentState(IconMatchGame.STATE_RUN);
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			mParent.setCurrentState(IconMatchGame.STATE_RUN);
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.luzi82.game;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -45,6 +46,20 @@ public abstract class AbstractState<P extends StateParent> implements
 	}
 
 	public void tick() {
+	}
+
+	public Resources getResources() {
+		return mParent.getResources();
+	}
+
+	@Override
+	public int getHeight() {
+		return mParent.getHeight();
+	}
+
+	@Override
+	public int getWidth() {
+		return mParent.getWidth();
 	}
 
 }
