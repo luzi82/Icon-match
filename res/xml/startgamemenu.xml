@@ -5,6 +5,10 @@
 		android:title="@string/startgamemenu_pack_title">
 	</ListPreference>
 
+	<ListPreference android:key="startgamemenu_level"
+		android:title="@string/startgamemenu_level_title">
+	</ListPreference>
+
 	<Preference android:key="startgamemenu_cheatsheet"
 		android:title="@string/startgamemenu_cheatsheet_title">
 	</Preference>

@@ -17,7 +17,9 @@ public class IconMatchGameActivity extends GameActivity {
 
 	@Override
 	protected AbstractState<?> createGame() {
-		return new IconMatchGame(this, getIntent().getStringExtra("filename"));
+		String filename = getIntent().getStringExtra("filename");
+		int startLevel = getIntent().getIntExtra("startLevel", 0);
+		return new IconMatchGame(this, filename, startLevel);
 	}
 
 	@Override

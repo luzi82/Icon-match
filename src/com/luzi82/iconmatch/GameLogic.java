@@ -19,6 +19,10 @@ public class GameLogic {
 
 	final Random mRandom;
 	final int mPeriodMs;
+	final int mStartLevel;
+
+	final float mLevelSpeedFactor;
+	final float mLevelScoreFactor;
 
 	// env var
 
@@ -53,9 +57,12 @@ public class GameLogic {
 	int mLastHitTick;
 	int mLastHitScoreAdd;
 
-	public GameLogic(int periodMs, Random random) {
+	public GameLogic(int periodMs, Random random, int startLevel) {
 		mPeriodMs = periodMs;
 		mRandom = random;
+		mStartLevel = startLevel;
+		mLevelSpeedFactor = (float) Math.pow(2, mStartLevel * 0.5d);
+		mLevelScoreFactor = (float) Math.pow(2, mStartLevel);
 	}
 
 	void tick() {
@@ -95,12 +102,12 @@ public class GameLogic {
 		if (mSelectionSize > 0) {
 			while (mAnswer.size() < mScreenBarCount) {
 				Block newBlock = new Block();
-				if (Math.random() < 0.5){
+				if (Math.random() < 0.5) {
 					newBlock.left = randomNext();
 					newBlock.right = randomNext();
 				} else {
 					newBlock.right = randomNext();
-					newBlock.left = randomNext();				
+					newBlock.left = randomNext();
 				}
 				newBlock.center = (Math.random() < 0.5) ? newBlock.left
 						: newBlock.right;
@@ -144,11 +151,12 @@ public class GameLogic {
 			ret = -1;
 		}
 		mScoreFloat = mScoreBase
-				+ ((mCombo > 0) ? ((float) (mCombo * Math.log10(mCombo))) : 0f);
+				+ ((mCombo > 0) ? ((float) (mCombo * Math.log10(mCombo))) : 0f)
+				* mLevelScoreFactor;
 		int oldScore = mScore;
 		mScore = (int) (mScoreFloat * 10);
 		mLastHitScoreAdd = mScore - oldScore;
-		
+
 		buildBlock();
 
 		return ret;
@@ -160,8 +168,8 @@ public class GameLogic {
 			ret = mRandom.nextInt(mSelectionSize);
 		} while (mRandomHistory.contains(ret));
 		mRandomHistory.addFirst(ret);
-		while (mRandomHistory.size() > 
-			Math.max(1, Math.min(10, mSelectionSize / 2))) {
+		while (mRandomHistory.size() > Math.max(1, Math.min(10,
+				mSelectionSize / 2))) {
 			mRandomHistory.removeLast();
 		}
 		return ret;
@@ -176,7 +184,7 @@ public class GameLogic {
 	}
 
 	float currentSpeed() {
-		return (BASE_SPEED + SPEED_FACTOR * mBlockDone);
+		return (BASE_SPEED * mLevelSpeedFactor + SPEED_FACTOR * mBlockDone);
 	}
 
 	public class Block {

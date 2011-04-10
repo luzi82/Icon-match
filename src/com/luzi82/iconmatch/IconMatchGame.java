@@ -106,12 +106,12 @@ public class IconMatchGame extends
 	// ////////////////////
 
 	public IconMatchGame(IconMatchGameActivity iconMatchGameActivity,
-			String iconPackFilename) {
+			String iconPackFilename, int startLevel) {
 		super(iconMatchGameActivity);
 
 		mPeriodMs = (int) mParent.getPeriodMs();
 		mFilename = iconPackFilename;
-		mGameMachine = new GameLogic(mParent.getPeriodMs(), mRandom);
+		mGameMachine = new GameLogic(mParent.getPeriodMs(), mRandom, startLevel);
 
 		addState(STATE_START, new GameStartState(this));
 		addState(STATE_PAUSE, new GamePauseState(this));
