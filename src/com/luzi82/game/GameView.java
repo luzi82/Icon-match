@@ -37,7 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public synchronized boolean onKeyDown(int keyCode, KeyEvent event) {
 		super.onKeyDown(keyCode, event);
 		synchronized (mGame) {
 			mGame.onKeyDown(keyCode, event);
@@ -46,7 +46,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	public synchronized boolean onKeyUp(int keyCode, KeyEvent event) {
 		super.onKeyUp(keyCode, event);
 		synchronized (mGame) {
 			mGame.onKeyUp(keyCode, event);
@@ -55,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public synchronized boolean onTouchEvent(MotionEvent event) {
 		super.onTouchEvent(event);
 		synchronized (mGame) {
 			mGame.onTouchEvent(event);
@@ -64,41 +64,41 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@Override
-	public void onWindowFocusChanged(boolean hasWindowFocus) {
+	public synchronized void onWindowFocusChanged(boolean hasWindowFocus) {
 		refreshState();
 	}
 
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+	public synchronized void surfaceChanged(SurfaceHolder holder, int format,
+			int width, int height) {
 		synchronized (mGame) {
 			mGame.surfaceChanged(format, width, height);
 		}
 	}
 
 	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
+	public synchronized void surfaceCreated(SurfaceHolder holder) {
 		mSurfaceAvailable = true;
 		refreshState();
 	}
 
 	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
+	public synchronized void surfaceDestroyed(SurfaceHolder holder) {
 		mSurfaceAvailable = false;
 		refreshState();
 	}
 
-	public void onResume() {
+	public synchronized void onResume() {
 		mActive = true;
 		refreshState();
 	}
 
-	public void onPause() {
+	public synchronized void onPause() {
 		mActive = false;
 		refreshState();
 	}
 
-	public void onStop() {
+	public synchronized void onStop() {
 		if (mStartDone) {
 			mGame.onStateEnd();
 		}
@@ -112,20 +112,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			mTimer.scheduleAtFixedRate(new TimerTask() {
 				@Override
 				public void run() {
-					if (System.currentTimeMillis()
-							- scheduledExecutionTime() > 10)
+					if (System.currentTimeMillis() - scheduledExecutionTime() > 10)
 						return;
-					synchronized (mGame) {
-						mGame.tick();
-						Canvas c = null;
-						try {
-							c = mHolder.lockCanvas(null);
-							synchronized (mHolder) {
-								mGame.draw(c);
-							}
-						} finally {
-							if (c != null) {
-								mHolder.unlockCanvasAndPost(c);
+					synchronized (GameView.this) {
+						if (!mRunning)
+							return;
+						synchronized (mGame) {
+							mGame.tick();
+							Canvas c = null;
+							try {
+								c = mHolder.lockCanvas(null);
+								synchronized (mHolder) {
+									mGame.draw(c);
+								}
+							} finally {
+								if (c != null) {
+									mHolder.unlockCanvasAndPost(c);
+								}
 							}
 						}
 					}
@@ -137,7 +140,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	private void refreshState() {
+	private synchronized void refreshState() {
 		boolean currentState = mActive && mSurfaceAvailable && hasWindowFocus();
 		if (currentState == mRunning) {
 			return;
