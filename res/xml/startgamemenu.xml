@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<ListPreference android:key="startgamemenu_pack" android:title="@string/startgamemenu_pack_title">
+	<ListPreference android:key="startgamemenu_pack"
+		android:title="@string/startgamemenu_pack_title">
 	</ListPreference>
-	
+
+	<Preference android:key="startgamemenu_cheatsheet"
+		android:title="@string/startgamemenu_cheatsheet_title">
+	</Preference>
+
 	<Preference android:key="startgamemenu_start" android:title="@string/startgamemenu_start_title">
 	</Preference>
 

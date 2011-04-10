@@ -94,6 +94,14 @@ public class StartGameMenuActivity extends PreferenceActivity {
 			intent.putExtra("filename", value);
 			startActivity(intent);
 		}
+		if (preference.getKey().equals("startgamemenu_cheatsheet")) {
+			ListPreference packPreference = (ListPreference) findPreference("startgamemenu_pack");
+			String value = packPreference.getValue();
+
+			Intent intent = new Intent(this, CheatSheetActivity.class);
+			intent.putExtra("filename", value);
+			startActivity(intent);
+		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
 
