@@ -5,7 +5,6 @@ install.sh
 uninstall.sh
 .~lock.i18n.ods#
 .i18n_timestamp
-.classpath
 default.properties
 res/values*/iconmatch_loc_strings.xml
 /game_engine
