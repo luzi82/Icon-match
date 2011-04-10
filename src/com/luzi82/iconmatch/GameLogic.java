@@ -13,7 +13,7 @@ public class GameLogic {
 	final static float PENALTY_UNIT = 20;
 
 	final static float BASE_SPEED = 0.5f;
-	final static float SPEED_FACTOR = (float) (Math.log(2) / 60);
+	final static float SPEED_FACTOR = (float) (Math.log(2) / 120);
 
 	// instance const
 
