@@ -95,8 +95,13 @@ public class GameLogic {
 		if (mSelectionSize > 0) {
 			while (mAnswer.size() < mScreenBarCount) {
 				Block newBlock = new Block();
-				newBlock.left = randomNext();
-				newBlock.right = randomNext();
+				if (Math.random() < 0.5){
+					newBlock.left = randomNext();
+					newBlock.right = randomNext();
+				} else {
+					newBlock.right = randomNext();
+					newBlock.left = randomNext();				
+				}
 				newBlock.center = (Math.random() < 0.5) ? newBlock.left
 						: newBlock.right;
 				mAnswer.addLast(newBlock);
@@ -155,7 +160,8 @@ public class GameLogic {
 			ret = mRandom.nextInt(mSelectionSize);
 		} while (mRandomHistory.contains(ret));
 		mRandomHistory.addFirst(ret);
-		while (mRandomHistory.size() > 10) {
+		while (mRandomHistory.size() > 
+			Math.max(1, Math.min(10, mSelectionSize / 2))) {
 			mRandomHistory.removeLast();
 		}
 		return ret;
