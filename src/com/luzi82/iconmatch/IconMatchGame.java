@@ -281,8 +281,11 @@ public class IconMatchGame extends
 	}
 
 	private void loadFile() throws ZipException, IOException {
-		mIconPack = IconPack
-				.load(mFilename, mBarScreenHeight, mBarScreenHeight);
+		if ((mIconPack == null) || (mIconPack.mWidth != mBarScreenHeight)
+				|| (mIconPack.mHeight != mBarScreenHeight)) {
+			mIconPack = IconPack.load(mFilename, mBarScreenHeight,
+					mBarScreenHeight);
+		}
 		mGameMachine.mSelectionSize = mIconPack.mSelectionSize;
 		mGameMachine.buildBlock();
 	}

@@ -20,6 +20,10 @@ public class IconPack {
 
 	public int mSelectionSize;
 
+	public int mWidth;
+
+	public int mHeight;
+
 	public static IconPack load(String filename, int width, int height)
 			throws ZipException, IOException {
 		IconPackEntry ipe = IconPackEntry.get(filename);
@@ -81,6 +85,8 @@ public class IconPack {
 
 		IconPack ret = new IconPack();
 
+		ret.mWidth = width;
+		ret.mHeight = height;
 		ret.mCenterBitmap = aBitmapList.toArray(new Bitmap[0]);
 		ret.mSelectionBitmap = bBitmapList.toArray(new Bitmap[0]);
 		ret.mSelectionSize = aBitmapList.size();
