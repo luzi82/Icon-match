@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <template><zero>
 <ods id="tid_00">
-	<file>i18n.ods</file>
+	<file><parameter id="0"/></file>
 	<scope>
 		<for_view src="tid_00" did="0" id="tid_01">
 			<for_view src="tid_01" did="1" id="tid_02">
-				<file_out mkdir="1"><file>res/<view_coor src="tid_02" did="1"/>/<parameter id="0"/>.xml</file>
+				<file_out mkdir="1"><file>res/<view_coor src="tid_02" did="1"/>/<parameter id="1"/>.xml</file>
 <scope>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;resources&gt;
 
