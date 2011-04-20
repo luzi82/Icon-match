@@ -1,0 +1,3 @@
+[submodule "dep/AndroidGameEngine"]
+	path = dep/AndroidGameEngine
+	url = git@github.com:luzi82/AndroidGameEngine.git
