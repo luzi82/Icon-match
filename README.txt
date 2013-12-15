@@ -5,6 +5,7 @@ Icon Match
 Requirement:
 
 Eclipse with Android SDK
+imagemagick
 
 ======================
 
