@@ -1,1 +1,6 @@
 /.metadata/
+/iconmatch-android/bin/AndroidManifest.xml
+/iconmatch-android/bin/classes/
+/iconmatch-android/gen/
+/iconmatch-desktop/bin/
+/iconmatch/bin/
