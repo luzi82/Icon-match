@@ -5,9 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
-public abstract class GrGame extends Game implements InputProcessor {
+public abstract class GrGame<G extends GrGame<G,S>,S extends GrScreen<G,S>> extends Game implements InputProcessor {
 
-	GrScreen<?> mCurrentScreen;
+	S mCurrentScreen;
 	TouchTrace mTouchTrace;
 
 	@Override
@@ -16,11 +16,12 @@ public abstract class GrGame extends Game implements InputProcessor {
 		Gdx.input.setInputProcessor(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setScreen(Screen aScreen) {
 		super.setScreen(aScreen);
 		if (aScreen instanceof GrScreen) {
-			mCurrentScreen = (GrScreen<?>) aScreen;
+			mCurrentScreen = (S) aScreen;
 		} else {
 			mCurrentScreen = null;
 		}

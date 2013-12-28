@@ -3,7 +3,7 @@ package com.luzi82.gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Logger;
 
-public abstract class GrScreen<G extends GrGame> implements Screen {
+public abstract class GrScreen<G extends GrGame<G,S>,S extends GrScreen<G,S>> implements Screen {
 
 	protected G iParent;
 	protected int mScreenWidth;
