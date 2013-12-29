@@ -3,13 +3,14 @@ package com.luzi82.gdx;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
 
 import com.badlogic.gdx.utils.Disposable;
 
 public class GrDeepDispose {
 
-	public static void disposeMember(Object aObject,Class<?> aRootClass) {
-//		 iLogger.debug("disposeMember");
+	public static void disposeMember(Object aObject, Class<?> aRootClass) {
+		// iLogger.debug("disposeMember");
 		for (Class<?> c = aObject.getClass(); c != aRootClass; c = c.getSuperclass()) {
 			Field[] fv = c.getDeclaredFields();
 			for (Field f : fv) {
@@ -44,6 +45,12 @@ public class GrDeepDispose {
 		} else if (Disposable.class.isAssignableFrom(c)) {
 			Disposable d = (Disposable) mObject;
 			d.dispose();
+		} else if (mObject instanceof Iterable) {
+			@SuppressWarnings("rawtypes")
+			Iterable ita = (Iterable) mObject;
+			for (Object o : ita) {
+				deepDispose(o);
+			}
 		} else if (c.isArray()) {
 			Class<?> cc = c.getComponentType();
 			if (cc.isPrimitive()) {
@@ -55,6 +62,8 @@ public class GrDeepDispose {
 					Array.set(mObject, i, null);
 				}
 			}
+		} else {
+			System.err.println("deepDispose: undispose " + c.getName());
 		}
 	}
 

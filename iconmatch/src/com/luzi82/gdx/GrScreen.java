@@ -1,66 +1,81 @@
 package com.luzi82.gdx;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Logger;
 
-public abstract class GrScreen<G extends GrGame<G,S>,S extends GrScreen<G,S>> implements Screen {
+public abstract class GrScreen implements Screen, Disposable {
 
-	protected G iParent;
+	protected GrGame iParent;
 	protected int mScreenWidth;
 	protected int mScreenHeight;
-
-	private boolean iMemberLoaded = false;
+	protected GrRender mRender;
 
 	protected Logger iLogger = new Logger(this.getClass().getSimpleName(), Logger.DEBUG);
 
-	protected GrScreen(G aParent) {
+	protected GrScreen(GrGame aParent) {
 		iParent = aParent;
 	}
 
 	@Override
 	public final void show() {
 		iLogger.debug("show");
-		load();
+		if (mRender == null) {
+			mRender = createRender(mScreenWidth, mScreenHeight);
+		}
 		onScreenShow();
 	}
 
 	@Override
 	public final void resume() {
 		iLogger.debug("resume");
-		load();
+		if (mRender == null) {
+			mRender = createRender(mScreenWidth, mScreenHeight);
+		}
 		onScreenResume();
-		onScreenResize();
 	}
 
 	@Override
 	public final void resize(int aWidth, int aHeight) {
 		iLogger.debug("resize");
-		boolean sizeChanged = (mScreenWidth != aWidth) || (mScreenHeight != aHeight);
+		if ((mScreenWidth == aWidth) && (mScreenHeight == aHeight)) {
+			return;
+		}
 		mScreenWidth = aWidth;
 		mScreenHeight = aHeight;
-		if (iMemberLoaded && sizeChanged)
-			onScreenResize();
+		onScreenResize();
+		if (mRender != null) {
+			mRender.dispose();
+			mRender = createRender(mScreenWidth, mScreenHeight);
+		}
 	}
 
 	@Override
 	public final void render(float aDelta) {
 		// iLogger.debug("render");
-		if (iMemberLoaded)
-			onScreenRender(aDelta);
+		if (mRender != null) {
+			mRender.render(aDelta);
+		}
 	}
 
 	@Override
 	public final void hide() {
 		iLogger.debug("hide");
 		onScreenHide();
-		disposeMember();
+		if (mRender != null) {
+			mRender.dispose();
+			mRender = null;
+		}
 	}
 
 	@Override
 	public final void pause() {
 		iLogger.debug("pause");
 		onScreenPause();
-		disposeMember();
+		if (mRender != null) {
+			mRender.dispose();
+			mRender = null;
+		}
 	}
 
 	@Override
@@ -70,21 +85,8 @@ public abstract class GrScreen<G extends GrGame<G,S>,S extends GrScreen<G,S>> im
 		disposeMember();
 	}
 
-	private void load() {
-		if (iMemberLoaded)
-			return;
-		iMemberLoaded = true;
-		onScreenLoad();
-	}
-
 	private void disposeMember() {
-		// iLogger.debug("disposeMember");
-		GrDeepDispose.disposeMember(this, GrScreen.class);
-		iMemberLoaded = false;
-	}
-
-	protected void onScreenLoad() {
-		// dummy
+		GrDeepDispose.disposeMember(this, Object.class);
 	}
 
 	protected void onScreenResize() {
@@ -166,5 +168,7 @@ public abstract class GrScreen<G extends GrGame<G,S>,S extends GrScreen<G,S>> im
 	public Logger getLogger() {
 		return iLogger;
 	}
+
+	protected abstract GrRender createRender(int aWidth, int aHeight);
 
 }
