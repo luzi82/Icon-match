@@ -1,13 +1,13 @@
 package com.luzi82.gdx;
 
-public abstract class GrRender {
+public abstract class GrView {
 
 	protected final int WIDTH;
 	protected final int HEIGHT;
 
 	private static final int[] itmCount = { 0 };
 
-	public GrRender(int aWidth, int aHeight) {
+	public GrView(int aWidth, int aHeight) {
 		this.WIDTH = aWidth;
 		this.HEIGHT = aHeight;
 		System.err.println("GrRender.WIDTH = " + this.WIDTH);

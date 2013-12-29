@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.luzi82.gdx.GrRender;
+import com.luzi82.gdx.GrView;
 import com.luzi82.gdx.GrScreen;
 
 public class GameScreen extends GrScreen {
@@ -82,11 +82,11 @@ public class GameScreen extends GrScreen {
 	}
 
 	@Override
-	protected GrRender createRender(int aWidth, int aHeight) {
+	protected GrView createRender(int aWidth, int aHeight) {
 		return new Render(aWidth, aHeight);
 	}
 
-	class Render extends GrRender {
+	class Render extends GrView {
 
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);

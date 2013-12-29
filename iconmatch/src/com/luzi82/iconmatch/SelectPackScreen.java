@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.luzi82.gdx.GrGame;
-import com.luzi82.gdx.GrRender;
-import com.luzi82.gdx.GrRender2D;
+import com.luzi82.gdx.GrView;
+import com.luzi82.gdx.GrView2D;
 import com.luzi82.gdx.GrScreen;
 
 public class SelectPackScreen extends GrScreen {
@@ -18,11 +18,11 @@ public class SelectPackScreen extends GrScreen {
 	}
 
 	@Override
-	protected GrRender createRender(int aWidth, int aHeight) {
+	protected GrView createRender(int aWidth, int aHeight) {
 		return new Render(aWidth, aHeight);
 	}
 
-	class Render extends GrRender2D {
+	class Render extends GrView2D {
 
 		public Pixmap mWhite1Pixmap;
 		public Texture mWhite1Tex;

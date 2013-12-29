@@ -9,7 +9,7 @@ public abstract class GrScreen implements Screen, Disposable {
 	protected GrGame iParent;
 	protected int mScreenWidth;
 	protected int mScreenHeight;
-	protected GrRender mRender;
+	protected GrView mRender;
 
 	protected Logger iLogger = new Logger(this.getClass().getSimpleName(), Logger.DEBUG);
 
@@ -169,6 +169,6 @@ public abstract class GrScreen implements Screen, Disposable {
 		return iLogger;
 	}
 
-	protected abstract GrRender createRender(int aWidth, int aHeight);
+	protected abstract GrView createRender(int aWidth, int aHeight);
 
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class GrRender2D extends GrRender {
+public abstract class GrView2D extends GrView {
 
 	public OrthographicCamera mCamera;
 	public SpriteBatch mBatch;
@@ -19,7 +19,7 @@ public abstract class GrRender2D extends GrRender {
 	public Iterable<Sprite> mSpriteIterable;
 	public Iterable<DetectUnit> mDetectUnitIterable;
 
-	public GrRender2D(int aWidth, int aHeight) {
+	public GrView2D(int aWidth, int aHeight) {
 		super(aWidth, aHeight);
 
 		mCamera = new OrthographicCamera();

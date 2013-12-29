@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.luzi82.gdx.GrGame;
-import com.luzi82.gdx.GrRender;
+import com.luzi82.gdx.GrView;
 import com.luzi82.gdx.GrScreen;
 
 public class HomeScreen extends GrScreen {
@@ -21,11 +21,11 @@ public class HomeScreen extends GrScreen {
 	}
 
 	@Override
-	protected GrRender createRender(int aWidth, int aHeight) {
+	protected GrView createRender(int aWidth, int aHeight) {
 		return new Render(aWidth, aHeight);
 	}
 
-	class Render extends GrRender {
+	class Render extends GrView {
 
 		public Rectangle mPlayBtnRect;
 
