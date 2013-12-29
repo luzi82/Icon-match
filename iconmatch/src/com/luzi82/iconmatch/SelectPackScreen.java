@@ -3,12 +3,9 @@ package com.luzi82.iconmatch;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrRender;
@@ -89,7 +86,7 @@ public class SelectPackScreen extends GrScreen {
 			int backBtnSize = Math.round(Gdx.graphics.getPpcX() * 0.7f);
 			int backBtnMargin = Math.round(backBtnSize / PHI);
 
-			mBackBtnRect = RectUtils.createRect(backBtnMargin, aHeight - backBtnMargin, backBtnSize, backBtnSize, 7);
+			mBackBtnRect = RectUtils.createRect(backBtnMargin, backBtnMargin, backBtnSize, backBtnSize, 7);
 			mBackBtnSprite = new Sprite(mWhite1Tex);
 			SpriteUtils.setSpriteRect(mBackBtnSprite, mBackBtnRect);
 			mBackBtnSprite.setColor(0f, 0f, 0f, 1f);
@@ -97,6 +94,6 @@ public class SelectPackScreen extends GrScreen {
 		}
 
 	}
-
+	
 	public static final float PHI = (float) (1 + Math.sqrt(5)) / 2;
 }

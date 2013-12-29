@@ -18,13 +18,13 @@ public class RectUtils {
 			break;
 		}
 		switch ((aAlign - 1) / 3) {
-		case 0:
+		case 2:
 			y = aY;
 			break;
 		case 1:
 			y = aY - aH / 2;
 			break;
-		case 2:
+		case 0:
 			y = aY - aH;
 			break;
 		}
