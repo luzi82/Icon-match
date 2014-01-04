@@ -3,7 +3,6 @@ package com.luzi82.gdx;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Iterator;
 
 import com.badlogic.gdx.utils.Disposable;
 

@@ -9,7 +9,6 @@ import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrImage;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
-import com.luzi82.iconmatch.HomeScreen.BtnIdx;
 
 public class SelectPackScreen extends GrScreen {
 	public SelectPackScreen(GrGame aParent) {
