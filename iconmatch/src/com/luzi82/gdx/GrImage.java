@@ -3,12 +3,13 @@ package com.luzi82.gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GrImage extends GrElement {
 
 	public GrImage() {
-		super(true,false);
+		super(true, false);
 	}
 
 	Sprite mSprite = null;
@@ -45,10 +46,19 @@ public class GrImage extends GrElement {
 
 	public boolean iTextureDirty = true;
 	Texture iTexture;
+	TextureRegion iTextureRegion;
 
 	public void setTexture(Texture aTexture) {
 		this.iTextureDirty = true;
 		this.iTexture = aTexture;
+		this.iTextureRegion = null;
+		markDirty();
+	}
+
+	public void setTextureRegion(TextureRegion aTextureRegion) {
+		this.iTextureDirty = true;
+		this.iTexture = null;
+		this.iTextureRegion = aTextureRegion;
 		markDirty();
 	}
 
@@ -63,7 +73,7 @@ public class GrImage extends GrElement {
 
 	@Override
 	public void doUpdate() {
-		boolean spriteExist = ((iTexture != null) && (iRectangle != null));
+		boolean spriteExist = (((iTexture != null) || (iTextureRegion != null)) && (iRectangle != null));
 		if (!spriteExist) {
 			mSprite = null;
 			iTextureDirty = false;
@@ -78,7 +88,12 @@ public class GrImage extends GrElement {
 			iColorDirty = true;
 		}
 		if (iTextureDirty) {
-			mSprite.setTexture(iTexture);
+			if (iTexture != null) {
+				mSprite.setTexture(iTexture);
+			}
+			if (iTextureRegion != null) {
+				mSprite.setRegion(iTextureRegion);
+			}
 		}
 		if (iRectangleDirty) {
 			mSprite.setBounds(iRectangle.x, iRectangle.y, iRectangle.width, iRectangle.height);

@@ -1,18 +1,15 @@
 package com.luzi82.iconmatch;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.luzi82.gdx.GrButton;
 import com.luzi82.gdx.GrGame;
-import com.luzi82.gdx.GrView;
+import com.luzi82.gdx.GrImage;
 import com.luzi82.gdx.GrScreen;
+import com.luzi82.gdx.GrView;
 
 public class HomeScreen extends GrScreen {
 
@@ -29,10 +26,9 @@ public class HomeScreen extends GrScreen {
 
 		public Rectangle mPlayBtnRect;
 
-		public OrthographicCamera mCamera;
-		public SpriteBatch mBatch;
 		public Texture mTexture;
-		public Sprite mSprite;
+
+		public GrImage mTitleImg;
 
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
@@ -43,43 +39,36 @@ public class HomeScreen extends GrScreen {
 			mPlayBtnRect.setSize(btnSize);
 			mPlayBtnRect.setCenter(aWidth / 2, aHeight / 2);
 
-			mCamera = new OrthographicCamera(aWidth, aHeight);
-			mCamera.translate(aWidth / 2f, aHeight / 2f);
-			mCamera.update();
-			mBatch = new SpriteBatch();
-
 			mTexture = new Texture(Gdx.files.internal("data/libgdx.png"));
 			mTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 			TextureRegion region = new TextureRegion(mTexture, 0, 0, 512, 275);
 
-			mSprite = new Sprite(region);
-			mSprite.setBounds(mPlayBtnRect.x, mPlayBtnRect.y, mPlayBtnRect.width, mPlayBtnRect.height);
-		}
+			mTitleImg = new GrImage();
+			mTitleImg.setRect(mPlayBtnRect);
+			mTitleImg.setTextureRegion(region);
+			addElement(mTitleImg);
 
-		@Override
-		public void render(float aDelta) {
-			Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
-			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-			mBatch.setProjectionMatrix(mCamera.combined);
-			mBatch.begin();
-			mSprite.draw(mBatch);
-			mBatch.end();
+			GrButton screenBtn = new GrButton();
+			screenBtn.setButtonId(BtnIdx.NEXT.ordinal());
+			screenBtn.setRect(RectUtils.createRect(0, 0, WIDTH, HEIGHT, 1));
+			addElement(screenBtn);
 		}
 
 	}
 
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button, long aTime) {
-		Render render = (Render) mRender;
-		if (render == null)
-			return false;
-		if (button != Input.Buttons.LEFT)
-			return false;
-		iParent.setScreen(new SelectPackScreen(iParent));
-		return true;
+	enum BtnIdx {
+		NEXT
 	}
 
 	public static final float PHI = (float) (1 + Math.sqrt(5)) / 2;
+
+	@Override
+	public void onClick(int aButtonId) {
+		switch (BtnIdx.values()[aButtonId]) {
+		case NEXT:
+			iParent.setScreen(new SelectPackScreen(iParent));
+			break;
+		}
+	}
 }

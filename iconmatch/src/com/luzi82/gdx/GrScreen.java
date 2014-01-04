@@ -4,7 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Logger;
 
-public abstract class GrScreen implements Screen, Disposable {
+public abstract class GrScreen implements Screen, Disposable, GrView.Listener {
 
 	protected GrGame iParent;
 	protected int mScreenWidth;
@@ -22,6 +22,7 @@ public abstract class GrScreen implements Screen, Disposable {
 		iLogger.debug("show");
 		if (mRender == null) {
 			mRender = createRender(mScreenWidth, mScreenHeight);
+			mRender.setListener(this);
 		}
 		onScreenShow();
 	}
@@ -31,6 +32,7 @@ public abstract class GrScreen implements Screen, Disposable {
 		iLogger.debug("resume");
 		if (mRender == null) {
 			mRender = createRender(mScreenWidth, mScreenHeight);
+			mRender.setListener(this);
 		}
 		onScreenResume();
 	}
@@ -47,6 +49,7 @@ public abstract class GrScreen implements Screen, Disposable {
 		if (mRender != null) {
 			mRender.dispose();
 			mRender = createRender(mScreenWidth, mScreenHeight);
+			mRender.setListener(this);
 		}
 	}
 
@@ -133,28 +136,28 @@ public abstract class GrScreen implements Screen, Disposable {
 	}
 
 	public boolean touchDown(int x, int y, int pointer, int button, long aTime) {
-		if(mRender!=null){
+		if (mRender != null) {
 			mRender.touchDown(x, y, pointer, button, aTime);
 		}
 		return false;
 	}
 
 	public boolean touchUp(int x, int y, int pointer, int button, long aTime) {
-		if(mRender!=null){
+		if (mRender != null) {
 			mRender.touchUp(x, y, pointer, button, aTime);
 		}
 		return false;
 	}
 
 	public boolean touchDragged(int x, int y, int pointer, long aTime) {
-		if(mRender!=null){
+		if (mRender != null) {
 			mRender.touchDragged(x, y, pointer, aTime);
 		}
 		return false;
 	}
 
 	public boolean mouseMoved(int x, int y, long aTime) {
-		if(mRender!=null){
+		if (mRender != null) {
 			mRender.mouseMoved(x, y, aTime);
 		}
 		return false;

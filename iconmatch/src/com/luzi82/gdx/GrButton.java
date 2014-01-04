@@ -188,6 +188,10 @@ public class GrButton extends GrElement implements GrElementListener {
 		public void touchUp(int x, int y) {
 			if (mRect.contains(x, y)) {
 				setStateEngine(new OverState());
+				GrElementListener listener = getListener();
+				if (listener != null) {
+					listener.onClick(mButtonId);
+				}
 			} else {
 				setStateEngine(new OutState());
 			}
@@ -233,6 +237,11 @@ public class GrButton extends GrElement implements GrElementListener {
 	@Override
 	public void mouseMoved(int x, int y, long aTime) {
 		mStateEngine.mouseMoved(x, y);
+	}
+
+	@Override
+	public void onClick(int aButtonId) {
+		// ignore
 	}
 
 }

@@ -56,6 +56,12 @@ public abstract class GrElement implements Disposable {
 		}
 	}
 
+	protected GrElementListener getListener() {
+		if (iListener == null)
+			return null;
+		return iListener.get();
+	}
+
 	public abstract void touchDown(int x, int y, int pointer, int button, long aTime);
 
 	public abstract void touchUp(int x, int y, int pointer, int button, long aTime);

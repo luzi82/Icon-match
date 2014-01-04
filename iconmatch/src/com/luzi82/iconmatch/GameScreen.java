@@ -99,4 +99,10 @@ public class GameScreen extends GrScreen {
 		}
 
 	}
+
+	@Override
+	public void onClick(int aButtonId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

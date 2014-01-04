@@ -1,18 +1,15 @@
 package com.luzi82.iconmatch;
 
-import java.util.LinkedList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.luzi82.gdx.GrButton;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrImage;
-import com.luzi82.gdx.GrView;
-import com.luzi82.gdx.GrView2D;
 import com.luzi82.gdx.GrScreen;
+import com.luzi82.gdx.GrView;
+import com.luzi82.iconmatch.HomeScreen.BtnIdx;
 
 public class SelectPackScreen extends GrScreen {
 	public SelectPackScreen(GrGame aParent) {
@@ -24,7 +21,7 @@ public class SelectPackScreen extends GrScreen {
 		return new Render(aWidth, aHeight);
 	}
 
-	class Render extends GrView2D {
+	class Render extends GrView {
 
 		public Pixmap mWhite1Pixmap;
 		public Texture mWhite1Tex;
@@ -99,7 +96,7 @@ public class SelectPackScreen extends GrScreen {
 			int backBtnSize = Math.round(Gdx.graphics.getPpcX() * 1f);
 			int backBtnMargin = Math.round(Gdx.graphics.getPpcX() * 1f / PHI);
 
-			rect = RectUtils.createRect(backBtnMargin, backBtnMargin, backBtnSize, backBtnSize, 7);
+			rect = RectUtils.createRect(backBtnMargin, HEIGHT - backBtnMargin, backBtnSize, backBtnSize, 7);
 			img = new GrImage();
 			img.setRect(rect);
 			img.setColor(0f, 0f, 0f, 1f);
@@ -123,6 +120,15 @@ public class SelectPackScreen extends GrScreen {
 
 	enum BtnIdx {
 		SELECT, LEFT, RIGHT, BACK, DL
+	}
+
+	@Override
+	public void onClick(int aButtonId) {
+		switch (BtnIdx.values()[aButtonId]) {
+		case BACK:
+			iParent.setScreen(new HomeScreen(iParent));
+			break;
+		}
 	}
 
 }
