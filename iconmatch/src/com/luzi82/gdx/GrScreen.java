@@ -133,22 +133,30 @@ public abstract class GrScreen implements Screen, Disposable {
 	}
 
 	public boolean touchDown(int x, int y, int pointer, int button, long aTime) {
-		// dummy
+		if(mRender!=null){
+			mRender.touchDown(x, y, pointer, button, aTime);
+		}
 		return false;
 	}
 
 	public boolean touchUp(int x, int y, int pointer, int button, long aTime) {
-		// dummy
+		if(mRender!=null){
+			mRender.touchUp(x, y, pointer, button, aTime);
+		}
 		return false;
 	}
 
 	public boolean touchDragged(int x, int y, int pointer, long aTime) {
-		// dummy
+		if(mRender!=null){
+			mRender.touchDragged(x, y, pointer, aTime);
+		}
 		return false;
 	}
 
-	public boolean touchMoved(int x, int y, long aTime) {
-		// dummy
+	public boolean mouseMoved(int x, int y, long aTime) {
+		if(mRender!=null){
+			mRender.mouseMoved(x, y, aTime);
+		}
 		return false;
 	}
 

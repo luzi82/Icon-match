@@ -80,7 +80,7 @@ public abstract class GrGame extends Game implements InputProcessor {
 			return false;
 		if (mTouchTrace != null)
 			mTouchTrace.touchMoved(x, y);
-		return mCurrentScreen.touchMoved(x, y, Gdx.input.getCurrentEventTime());
+		return mCurrentScreen.mouseMoved(x, y, Gdx.input.getCurrentEventTime());
 	}
 
 	@Override

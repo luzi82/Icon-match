@@ -28,4 +28,20 @@ public abstract class GrView {
 		GrDeepDispose.disposeMember(this, Object.class);
 	}
 
+	public void touchDown(int x, int y, int pointer, int button, long aTime) {
+		// dummy
+	}
+
+	public void touchUp(int x, int y, int pointer, int button, long aTime) {
+		// dummy
+	}
+
+	public void touchDragged(int x, int y, int pointer, long aTime) {
+		// dummy
+	}
+
+	public void mouseMoved(int x, int y, long aTime) {
+		// dummy
+	}
+
 }
