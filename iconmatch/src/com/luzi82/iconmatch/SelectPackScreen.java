@@ -96,8 +96,8 @@ public class SelectPackScreen extends GrScreen {
 			mRightArrowImg.setTexture(mWhite1Tex);
 			addElement(mRightArrowImg);
 
-			int backBtnSize = Math.round(Gdx.graphics.getPpcX() * 0.7f);
-			int backBtnMargin = Math.round(backBtnSize / PHI);
+			int backBtnSize = Math.round(Gdx.graphics.getPpcX() * 1f);
+			int backBtnMargin = Math.round(Gdx.graphics.getPpcX() * 1f / PHI);
 
 			rect = RectUtils.createRect(backBtnMargin, backBtnMargin, backBtnSize, backBtnSize, 7);
 			img = new GrImage();
