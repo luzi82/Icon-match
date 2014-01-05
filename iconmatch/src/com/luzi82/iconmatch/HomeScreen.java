@@ -5,9 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.luzi82.gdx.GrButton;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.luzi82.gdx.GrGame;
-import com.luzi82.gdx.GrImage;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
 
@@ -28,7 +31,9 @@ public class HomeScreen extends GrScreen {
 
 		public Texture mTexture;
 
-		public GrImage mTitleImg;
+		public Button mBtn;
+
+		// public GrImage mTitleImg;
 
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
@@ -44,31 +49,51 @@ public class HomeScreen extends GrScreen {
 
 			TextureRegion region = new TextureRegion(mTexture, 0, 0, 512, 275);
 
-			mTitleImg = new GrImage();
-			mTitleImg.setRect(mPlayBtnRect);
-			mTitleImg.setTextureRegion(region);
-			addElement(mTitleImg);
+			Image img = new Image(region);
+			img.setBounds(mPlayBtnRect.x, mPlayBtnRect.y, mPlayBtnRect.width, mPlayBtnRect.height);
+			mStage.addActor(img);
 
-			GrButton screenBtn = new GrButton();
-			screenBtn.setButtonId(BtnIdx.NEXT.ordinal());
-			screenBtn.setRect(RectUtils.createRect(0, 0, WIDTH, HEIGHT, 1));
-			addElement(screenBtn);
+			mBtn = new Button(new BaseDrawable());
+			mBtn.setBounds(0, 0, WIDTH, HEIGHT);
+			mBtn.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					onBtnClick();
+				}
+
+			});
+			mStage.addActor(mBtn);
+
+			// mTitleImg = new GrImage();
+			// mTitleImg.setRect(mPlayBtnRect);
+			// mTitleImg.setTextureRegion(region);
+			// addElement(mTitleImg);
+			//
+			// GrButton screenBtn = new GrButton();
+			// screenBtn.setButtonId(BtnIdx.NEXT.ordinal());
+			// screenBtn.setRect(RectUtils.createRect(0, 0, WIDTH, HEIGHT, 1));
+			// addElement(screenBtn);
 		}
 
 	}
 
-	enum BtnIdx {
-		NEXT
-	}
+	// enum BtnIdx {
+	// NEXT
+	// }
 
 	public static final float PHI = (float) (1 + Math.sqrt(5)) / 2;
 
-	@Override
-	public void onClick(int aButtonId) {
-		switch (BtnIdx.values()[aButtonId]) {
-		case NEXT:
-			iParent.setScreen(new SelectPackScreen(iParent));
-			break;
-		}
+	void onBtnClick() {
+		iParent.setScreen(new SelectPackScreen(iParent));
 	}
+
+	// @Override
+	// public void onClick(int aButtonId) {
+	// switch (BtnIdx.values()[aButtonId]) {
+	// case NEXT:
+	// iParent.setScreen(new SelectPackScreen(iParent));
+	// break;
+	// }
+	// }
+
 }

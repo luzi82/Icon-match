@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.luzi82.gdx.GrView;
 import com.luzi82.gdx.GrScreen;
+import com.luzi82.gdx.GrView;
 
 public class GameScreen extends GrScreen {
 	private OrthographicCamera camera;
@@ -100,9 +100,4 @@ public class GameScreen extends GrScreen {
 
 	}
 
-	@Override
-	public void onClick(int aButtonId) {
-		// TODO Auto-generated method stub
-		
-	}
 }

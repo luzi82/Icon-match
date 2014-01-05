@@ -3,10 +3,11 @@ package com.luzi82.iconmatch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.luzi82.gdx.GrButton;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.luzi82.gdx.GrGame;
-import com.luzi82.gdx.GrImage;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
 
@@ -25,30 +26,17 @@ public class SelectPackScreen extends GrScreen {
 		public Pixmap mWhite1Pixmap;
 		public Texture mWhite1Tex;
 
-		// public Rectangle mPackImgRect;
-		// public Sprite mPackImgSprite;
+		public Button mPackImgBtn;
 
-		public GrButton mPackImgBtn;
+		public Image mLeftArrowImg;
+		public Image mRightArrowImg;
 
-		// public Rectangle mLeftArrowRect;
-		// public Sprite mLeftArrowSprite;
-		public GrImage mLeftArrowImg;
-		public GrImage mRightArrowImg;
-
-		// public Rectangle mRightArrowRect;
-		// public Sprite mRightArrowSprite;
-
-		// public Rectangle mBackBtnRect;
-		// public Sprite mBackBtnSprite;
-		public GrButton mBackBtn;
-
-		// public LinkedList<Sprite> mSpriteList;
+		public Button mBackBtn;
 
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
 
-			Rectangle rect;
-			GrImage img;
+			Sprite up, down;
 
 			// mSpriteIterable = mSpriteList = new LinkedList<Sprite>();
 
@@ -60,74 +48,64 @@ public class SelectPackScreen extends GrScreen {
 
 			int minSide = Math.min(aWidth, aHeight);
 			int packImgSize = Math.round(minSide / PHI);
-			rect = RectUtils.createRect(aWidth / 2, aHeight / 2, packImgSize, packImgSize, 5);
-			img = new GrImage();
-			img.setRect(rect);
-			img.setColor(0f, 1f, 0f, 1f);
-			img.setTexture(mWhite1Tex);
-			mPackImgBtn = new GrButton();
-			mPackImgBtn.setButtonId(BtnIdx.SELECT.ordinal());
-			mPackImgBtn.setRect(rect);
-			mPackImgBtn.setOutElement(img);
-			mPackImgBtn.setOverElement(img);
-			img = new GrImage();
-			img.setRect(rect);
-			img.setColor(0.5f, 1f, 0.5f, 1f);
-			img.setTexture(mWhite1Tex);
-			mPackImgBtn.setDownElement(img);
-			addElement(mPackImgBtn);
+			up = new Sprite(mWhite1Tex);
+			up.setColor(0f, 1f, 0f, 1f);
+			down = new Sprite(mWhite1Tex);
+			down.setColor(0.5f, 1f, 0.5f, 1f);
+			mPackImgBtn = new Button(new SpriteDrawable(up), new SpriteDrawable(down));
+			ActorUtils.setBound(mPackImgBtn, RectUtils.createRect(aWidth / 2, aHeight / 2, packImgSize, packImgSize, 5));
+			mStage.addActor(mPackImgBtn);
 
 			int arrowImgSize = Math.round(minSide / PHI / PHI / PHI / 2);
 			int arrowImgDx = Math.round(minSide * (0.5f - 1 / PHI / PHI / 4));
 
-			mLeftArrowImg = new GrImage();
-			mLeftArrowImg.setRect(RectUtils.createRect(aWidth / 2 - arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
+			mLeftArrowImg = new Image(mWhite1Tex);
+			// mLeftArrowImg.setRect(RectUtils.createRect(aWidth / 2 -
+			// arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
 			mLeftArrowImg.setColor(1f, 0f, 0f, 1f);
-			mLeftArrowImg.setTexture(mWhite1Tex);
-			addElement(mLeftArrowImg);
+			ActorUtils.setBound(mLeftArrowImg, RectUtils.createRect(aWidth / 2 - arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
+			mStage.addActor(mLeftArrowImg);
 
-			mRightArrowImg = new GrImage();
-			mRightArrowImg.setRect(RectUtils.createRect(aWidth / 2 + arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
+			mRightArrowImg = new Image(mWhite1Tex);
+			// mRightArrowImg.setRect(RectUtils.createRect(aWidth / 2 +
+			// arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
 			mRightArrowImg.setColor(0f, 0f, 1f, 1f);
-			mRightArrowImg.setTexture(mWhite1Tex);
-			addElement(mRightArrowImg);
+			ActorUtils.setBound(mRightArrowImg, RectUtils.createRect(aWidth / 2 + arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
+			mStage.addActor(mRightArrowImg);
 
 			int backBtnSize = Math.round(Gdx.graphics.getPpcX() * 1f);
 			int backBtnMargin = Math.round(Gdx.graphics.getPpcX() * 1f / PHI);
 
-			rect = RectUtils.createRect(backBtnMargin, HEIGHT - backBtnMargin, backBtnSize, backBtnSize, 7);
-			img = new GrImage();
-			img.setRect(rect);
-			img.setColor(0f, 0f, 0f, 1f);
-			img.setTexture(mWhite1Tex);
-			mBackBtn = new GrButton();
-			mBackBtn.setButtonId(BtnIdx.BACK.ordinal());
-			mBackBtn.setRect(rect);
-			mBackBtn.setOutElement(img);
-			mBackBtn.setOverElement(img);
-			img = new GrImage();
-			img.setRect(rect);
-			img.setColor(0.5f, 0.5f, 0.5f, 1f);
-			img.setTexture(mWhite1Tex);
-			mBackBtn.setDownElement(img);
-			addElement(mBackBtn);
+			up = new Sprite(mWhite1Tex);
+			up.setColor(0f, 0f, 0f, 1f);
+			down = new Sprite(mWhite1Tex);
+			down.setColor(0.5f, 0.5f, 0.5f, 1f);
+			mBackBtn = new Button(new SpriteDrawable(up), new SpriteDrawable(down));
+			ActorUtils.setBound(mBackBtn, RectUtils.createRect(backBtnMargin, HEIGHT - backBtnMargin, backBtnSize, backBtnSize, 7));
+			mStage.addActor(mBackBtn);
 		}
 
 	}
 
 	public static final float PHI = (float) (1 + Math.sqrt(5)) / 2;
+	//
+	// enum BtnIdx {
+	// SELECT, LEFT, RIGHT, BACK, DL
+	// }
+	//
+	// @Override
+	// public void onClick(int aButtonId) {
+	// switch (BtnIdx.values()[aButtonId]) {
+	// case BACK:
+	// iParent.setScreen(new HomeScreen(iParent));
+	// break;
+	// }
+	// }
 
-	enum BtnIdx {
-		SELECT, LEFT, RIGHT, BACK, DL
-	}
-
-	@Override
-	public void onClick(int aButtonId) {
-		switch (BtnIdx.values()[aButtonId]) {
-		case BACK:
-			iParent.setScreen(new HomeScreen(iParent));
-			break;
-		}
-	}
+	// @Override
+	// public boolean handle(Event event) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
 
 }

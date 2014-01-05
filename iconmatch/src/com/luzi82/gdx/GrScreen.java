@@ -4,7 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Logger;
 
-public abstract class GrScreen implements Screen, Disposable, GrView.Listener {
+public abstract class GrScreen implements Screen, Disposable {
 
 	protected GrGame iParent;
 	protected int mScreenWidth;
@@ -22,7 +22,6 @@ public abstract class GrScreen implements Screen, Disposable, GrView.Listener {
 		iLogger.debug("show");
 		if (mRender == null) {
 			mRender = createRender(mScreenWidth, mScreenHeight);
-			mRender.setListener(this);
 		}
 		onScreenShow();
 	}
@@ -32,7 +31,6 @@ public abstract class GrScreen implements Screen, Disposable, GrView.Listener {
 		iLogger.debug("resume");
 		if (mRender == null) {
 			mRender = createRender(mScreenWidth, mScreenHeight);
-			mRender.setListener(this);
 		}
 		onScreenResume();
 	}
@@ -49,7 +47,6 @@ public abstract class GrScreen implements Screen, Disposable, GrView.Listener {
 		if (mRender != null) {
 			mRender.dispose();
 			mRender = createRender(mScreenWidth, mScreenHeight);
-			mRender.setListener(this);
 		}
 	}
 
