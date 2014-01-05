@@ -84,7 +84,8 @@ public class HomeScreen extends GrScreen {
 	public static final float PHI = (float) (1 + Math.sqrt(5)) / 2;
 
 	void onBtnClick() {
-		iParent.setScreen(new SelectPackScreen(iParent));
+//		iParent.setScreen(new SelectPackScreen(iParent));
+		iParent.setScreen(new TargetScreen(iParent));
 	}
 
 	// @Override
