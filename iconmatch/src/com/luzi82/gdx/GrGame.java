@@ -9,6 +9,11 @@ public abstract class GrGame extends Game implements InputProcessor {
 
 	GrScreen mCurrentScreen;
 	TouchTrace mTouchTrace;
+	public final GrPal mPal;
+
+	public GrGame(GrPal aPal) {
+		mPal = aPal;
+	}
 
 	@Override
 	public void create() {

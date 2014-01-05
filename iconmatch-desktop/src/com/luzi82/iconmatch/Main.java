@@ -10,7 +10,7 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 320;
 		cfg.height = 480;
-		
-		new LwjglApplication(new IconMatchGame(), cfg);
+
+		new LwjglApplication(new IconMatchGame(new DesktopPal()), cfg);
 	}
 }
