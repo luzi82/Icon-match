@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrScreen;
@@ -83,6 +85,13 @@ public class SelectPackScreen extends GrScreen {
 			mBackBtn = new Button(new SpriteDrawable(up), new SpriteDrawable(down));
 			ActorUtils.setBound(mBackBtn, RectUtils.createRect(backBtnMargin, HEIGHT - backBtnMargin, backBtnSize, backBtnSize, 7));
 			mStage.addActor(mBackBtn);
+			mBackBtn.addListener(new ChangeListener() {
+				
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					iParent.setScreen(new HomeScreen(iParent));
+				}
+			});
 		}
 
 	}
