@@ -6,18 +6,27 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
+import com.luzi82.homuvalue.Value.Variable;
 
 public class TargetScreen extends GrScreen {
 
+	Variable<Integer> mItemCount = new Variable<Integer>();
+
 	public TargetScreen(GrGame aParent) {
 		super(aParent);
+		mItemCount.set(30);
 	}
 
 	@Override
@@ -30,37 +39,77 @@ public class TargetScreen extends GrScreen {
 		public Pixmap mWhite1Pixmap;
 		public Texture mWhite1Tex;
 
-		public BitmapFont bf;
-
-		public Image x;
+		public BitmapFont mFont;
 
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
-
-			FreeTypeFontGenerator g = new FreeTypeFontGenerator(Gdx.files.internal("data/Roboto-Regular.ttf"));
-			bf = g.generateFont(30, "0123456789", false);
-			g.dispose();
-
-			Label.LabelStyle ls = new LabelStyle();
-			ls.font = bf;
-			ls.fontColor = Color.WHITE;
-
-			Label label = new Label("123", ls);
-			// label.setOrigin(WIDTH / 2, HEIGHT / 2);
-			// label.setPosition(WIDTH / 2, HEIGHT / 2);
-			label.setAlignment(Align.center);
-			ActorUtils.setBound(label, RectUtils.createRect(WIDTH / 2, HEIGHT / 2, 200, 200, 5));
 
 			mWhite1Pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 			mWhite1Pixmap.setColor(1f, 1f, 1f, 1f);
 			mWhite1Pixmap.fill();
 			mWhite1Tex = new Texture(mWhite1Pixmap);
 
-			x = new Image(mWhite1Tex);
-			x.setColor(Color.BLACK);
-			ActorUtils.setBound(x, RectUtils.createRect(WIDTH / 2, HEIGHT / 2, 200, 200, 5));
-			mStage.addActor(x);
+			float minSide = Math.min(WIDTH, HEIGHT);
+			float minPhi1 = minSide / PHI;
+			float minPhi2 = minPhi1 / PHI;
+			float minPhi3 = minPhi2 / PHI;
+
+			float btnW = minPhi1;
+			float btnH = minPhi2;
+			float fontSize = minPhi3;
+
+			FreeTypeFontGenerator g = new FreeTypeFontGenerator(Gdx.files.internal("data/Roboto-Regular.ttf"));
+			mFont = g.generateFont((int) Math.floor(minPhi3), "0123456789", false);
+			g.dispose();
+
+			Label.LabelStyle ls = new LabelStyle();
+			ls.font = mFont;
+			ls.fontColor = Color.WHITE;
+
+			ButtonStyle bs;
+			Rectangle rect;
+
+			Rectangle labelRect = RectUtils.createRect(0, (HEIGHT - fontSize - btnH) / PHI + btnH, WIDTH, fontSize, 1);
+			final Label label = new Label("", ls);
+			label.setAlignment(Align.center);
+			ActorUtils.setBound(label, labelRect);
+			ActorUtils.connectValue(label, mItemCount);
 			mStage.addActor(label);
+
+			rect = RectUtils.createRect(WIDTH / PHI / PHI / 2, labelRect.y, fontSize, fontSize, 2);
+			bs = new ButtonStyle();
+			bs.up = DrawableUtils.createDrawable(mWhite1Tex, new Color(0xff0000ff));
+			bs.down = DrawableUtils.createDrawable(mWhite1Tex, new Color(0xff7f7fff));
+			final Button minusButton = new Button(bs);
+			ActorUtils.setBound(minusButton, rect);
+			mStage.addActor(minusButton);
+			minusButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					mItemCount.set(mItemCount.get() - 1);
+				}
+			});
+
+			rect = RectUtils.createRect(WIDTH * PHI / 2, labelRect.y, fontSize, fontSize, 2);
+			bs = new ButtonStyle();
+			bs.up = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x00ff00ff));
+			bs.down = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x7fff7fff));
+			final Button addButton = new Button(bs);
+			ActorUtils.setBound(addButton, rect);
+			mStage.addActor(addButton);
+			addButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					mItemCount.set(mItemCount.get() + 1);
+				}
+			});
+
+			bs = new ButtonStyle();
+			bs.up = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x0000ffff));
+			bs.down = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x7f7fffff));
+			final Button nextButton = new Button(bs);
+			ActorUtils.setBound(nextButton, RectUtils.createRect(WIDTH / 2, (HEIGHT - fontSize - btnH) / PHI / PHI, btnW, btnH, 2));
+			mStage.addActor(nextButton);
 		}
 
 		// public Rectangle mPlayBtnRect;

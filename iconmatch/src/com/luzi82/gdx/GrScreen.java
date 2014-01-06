@@ -20,18 +20,14 @@ public abstract class GrScreen implements Screen, Disposable {
 	@Override
 	public final void show() {
 		iLogger.debug("show");
-		if (mRender == null) {
-			mRender = createRender(mScreenWidth, mScreenHeight);
-		}
+		createRender();
 		onScreenShow();
 	}
 
 	@Override
 	public final void resume() {
 		iLogger.debug("resume");
-		if (mRender == null) {
-			mRender = createRender(mScreenWidth, mScreenHeight);
-		}
+		createRender();
 		onScreenResume();
 	}
 
@@ -46,8 +42,9 @@ public abstract class GrScreen implements Screen, Disposable {
 		onScreenResize();
 		if (mRender != null) {
 			mRender.dispose();
-			mRender = createRender(mScreenWidth, mScreenHeight);
+			mRender = null;
 		}
+		createRender();
 	}
 
 	@Override
@@ -175,6 +172,12 @@ public abstract class GrScreen implements Screen, Disposable {
 
 	public Logger getLogger() {
 		return iLogger;
+	}
+
+	private void createRender() {
+		if ((mRender != null) || (mScreenWidth == 0) || (mScreenHeight == 0))
+			return;
+		mRender = createRender(mScreenWidth, mScreenHeight);
 	}
 
 	protected abstract GrView createRender(int aWidth, int aHeight);

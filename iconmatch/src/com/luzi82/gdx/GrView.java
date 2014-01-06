@@ -42,6 +42,7 @@ public abstract class GrView {
 
 	public void render(float aDelta) {
 		// updateDirtyElement();
+		mStage.act();
 
 		Gdx.gl.glClearColor(clearR, clearG, clearB, clearA);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);

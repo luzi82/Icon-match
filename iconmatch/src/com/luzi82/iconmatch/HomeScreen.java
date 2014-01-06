@@ -24,7 +24,7 @@ public class HomeScreen extends GrScreen {
 	protected GrView createRender(int aWidth, int aHeight) {
 		return new Render(aWidth, aHeight);
 	}
-
+	
 	class Render extends GrView {
 
 		public Rectangle mPlayBtnRect;
