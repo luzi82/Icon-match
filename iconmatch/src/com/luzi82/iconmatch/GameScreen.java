@@ -1,84 +1,26 @@
 package com.luzi82.iconmatch;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
 
 public class GameScreen extends GrScreen {
-	private OrthographicCamera camera;
-	private SpriteBatch mBatch;
-	private Texture texture;
-	private Sprite sprite;
 
-	protected GameScreen(IconMatchGame aParent) {
+	public GameLogic mLogic;
+	public long mTimeStamp;
+
+	protected GameScreen(GrGame aParent) {
 		super(aParent);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void onScreenShow() {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-
-		camera = new OrthographicCamera(1, h / w);
-		mBatch = new SpriteBatch();
-
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-		sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
-	}
-
-	@Override
-	public void onScreenHide() {
-		if (mBatch != null) {
-			mBatch.dispose();
-			mBatch = null;
-		}
-		if (texture != null) {
-			texture.dispose();
-			texture = null;
-		}
-	}
-
-	@Override
-	public void onScreenDispose() {
-		hide();
-	}
-
-	@Override
-	public void onScreenRender(float delta) {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		mBatch.setProjectionMatrix(camera.combined);
-		mBatch.begin();
-		sprite.draw(mBatch);
-		mBatch.end();
-	}
-
-	@Override
-	public void onScreenResize() {
-	}
-
-	@Override
-	public void onScreenPause() {
-	}
-
-	@Override
-	public void onScreenResume() {
+		mLogic = new GameLogic(1);
+		mTimeStamp = System.currentTimeMillis();
 	}
 
 	@Override
@@ -88,16 +30,56 @@ public class GameScreen extends GrScreen {
 
 	class Render extends GrView {
 
+		public Pixmap mWhite1Pixmap;
+		public Texture mWhite1Tex;
+
+		public Button mBtn;
+
+		public Image mArea;
+
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
+
+			mWhite1Pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+			mWhite1Pixmap.setColor(1f, 1f, 1f, 1f);
+			mWhite1Pixmap.fill();
+			mWhite1Tex = new Texture(mWhite1Pixmap);
+
+			mArea = new Image(mWhite1Tex);
+			mArea.addAction(new Action() {
+				@Override
+				public boolean act(float delta) {
+					float life = mLogic.life(nowF());
+					float h = HEIGHT * (GameLogic.LIFE_MAX - life) / GameLogic.LIFE_MAX;
+					mArea.setBounds(0, HEIGHT - h, WIDTH, h);
+					return false;
+				}
+			});
+			mStage.addActor(mArea);
+
+			mBtn = new Button(new ButtonStyle());
+			mBtn.setBounds(0, 0, WIDTH, HEIGHT);
+			mBtn.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					mLogic.kill();
+				}
+			});
+			mStage.addActor(mBtn);
+
+			mStage.addAction(new Action() {
+				@Override
+				public boolean act(float delta) {
+					mLogic.tick(nowF());
+					return false;
+				}
+			});
 		}
 
-		@Override
-		public void render(float aDelta) {
-			// TODO Auto-generated method stub
+	}
 
-		}
-
+	public float nowF() {
+		return (float) (System.currentTimeMillis() - mTimeStamp) / 1000f;
 	}
 
 }

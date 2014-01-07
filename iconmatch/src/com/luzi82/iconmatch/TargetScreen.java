@@ -110,6 +110,12 @@ public class TargetScreen extends GrScreen {
 			final Button nextButton = new Button(bs);
 			ActorUtils.setBound(nextButton, RectUtils.createRect(WIDTH / 2, (HEIGHT - fontSize - btnH) / PHI / PHI, btnW, btnH, 2));
 			mStage.addActor(nextButton);
+			nextButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					iParent.setScreen(new GameScreen(iParent));
+				}
+			});
 		}
 
 		// public Rectangle mPlayBtnRect;
