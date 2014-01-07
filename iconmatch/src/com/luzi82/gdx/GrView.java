@@ -1,8 +1,13 @@
 package com.luzi82.gdx;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.luzi82.homuvalue.Value;
+import com.luzi82.iconmatch.ActorUtils;
 
 public abstract class GrView {
 
@@ -19,6 +24,7 @@ public abstract class GrView {
 	private static final int[] itmCount = { 0 };
 
 	public Stage mStage;
+	public LinkedList<Object> mMember = new LinkedList<Object>();
 
 	public GrView(int aWidth, int aHeight) {
 		this.WIDTH = aWidth;
@@ -36,8 +42,8 @@ public abstract class GrView {
 		// mBatch = new SpriteBatch();
 
 		mStage = new Stage(WIDTH, HEIGHT);
-//		mStage.addListener(this);
-//		mStage.addCaptureListener(this);
+		// mStage.addListener(this);
+		// mStage.addCaptureListener(this);
 	}
 
 	public void render(float aDelta) {
@@ -115,26 +121,26 @@ public abstract class GrView {
 		GrDeepDispose.disposeMember(this, Object.class);
 	}
 
-//	public interface Listener {
-		// public void onClick(int aButtonId);
-//	}
+	// public interface Listener {
+	// public void onClick(int aButtonId);
+	// }
 
-//	WeakReference<Listener> iListener;
-//
-//	public void setListener(Listener aListener) {
-//		iListener = new WeakReference<Listener>(aListener);
-//	}
-//	
-//	public Listener getListener(){
-//		if (iListener == null)
-//			return null;
-//		return iListener.get();
-//	}
-//
-//	@Override
-//	public boolean handle(Event event) {
-//		return getListener().handle(event);
-//	}
+	// WeakReference<Listener> iListener;
+	//
+	// public void setListener(Listener aListener) {
+	// iListener = new WeakReference<Listener>(aListener);
+	// }
+	//
+	// public Listener getListener(){
+	// if (iListener == null)
+	// return null;
+	// return iListener.get();
+	// }
+	//
+	// @Override
+	// public boolean handle(Event event) {
+	// return getListener().handle(event);
+	// }
 
 	// public void onClick(int aButtonId) {
 	// if (iListener == null)
@@ -144,5 +150,9 @@ public abstract class GrView {
 	// return;
 	// l.onClick(aButtonId);
 	// }
+
+	public <T> void connect(final Label aLabel, final Value<T> aValue) {
+		mMember.add(ActorUtils.connectValue(aLabel, aValue));
+	}
 
 }

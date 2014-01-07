@@ -13,20 +13,24 @@ public class ActorUtils {
 		aActor.setBounds(aRect.x, aRect.y, aRect.width, aRect.height);
 	}
 
-	public static <T> void connectValue(final Label aLabel, final Value<T> aValue) {
-		aValue.addListener(new Listener<T>() {
+	public static <T> Listener<T> connectValue(final Label aLabel, final Value<T> aValue) {
+		Listener<T> listener = new Listener<T>() {
 			@Override
 			public void onValueDirty(Value<T> v) {
+//				System.err.println("onValueDirty");
 				aLabel.addAction(new Action() {
 					@Override
 					public boolean act(float delta) {
+//						System.err.println("act");
 						aLabel.setText(aValue.get().toString());
 						return true;
 					}
 				});
 			}
-		});
+		};
+		aValue.addListener(listener);
 		aLabel.setText(aValue.get().toString());
+		return listener;
 	}
 
 }

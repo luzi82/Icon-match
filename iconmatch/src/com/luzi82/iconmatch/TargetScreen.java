@@ -73,7 +73,7 @@ public class TargetScreen extends GrScreen {
 			final Label label = new Label("", ls);
 			label.setAlignment(Align.center);
 			ActorUtils.setBound(label, labelRect);
-			ActorUtils.connectValue(label, mItemCount);
+			connect(label, mItemCount);
 			mStage.addActor(label);
 
 			rect = RectUtils.createRect(WIDTH / PHI / PHI / 2, labelRect.y, fontSize, fontSize, 2);
