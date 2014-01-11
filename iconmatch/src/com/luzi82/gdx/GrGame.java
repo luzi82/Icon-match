@@ -1,5 +1,7 @@
 package com.luzi82.gdx;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -10,9 +12,11 @@ public abstract class GrGame extends Game implements InputProcessor {
 	GrScreen mCurrentScreen;
 	TouchTrace mTouchTrace;
 	public final GrPal mPal;
+	public final Random mRandom;
 
 	public GrGame(GrPal aPal) {
 		mPal = aPal;
+		mRandom = new Random();
 	}
 
 	@Override

@@ -22,11 +22,8 @@ import com.luzi82.homuvalue.Value.Variable;
 
 public class TargetScreen extends GrScreen {
 
-	Variable<Integer> mItemCount = new Variable<Integer>();
-
 	public TargetScreen(GrGame aParent) {
 		super(aParent);
-		mItemCount.set(30);
 	}
 
 	@Override
@@ -43,6 +40,8 @@ public class TargetScreen extends GrScreen {
 
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
+
+			final IconMatchGame game = (IconMatchGame) iParent;
 
 			mWhite1Pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 			mWhite1Pixmap.setColor(1f, 1f, 1f, 1f);
@@ -73,7 +72,7 @@ public class TargetScreen extends GrScreen {
 			final Label label = new Label("", ls);
 			label.setAlignment(Align.center);
 			ActorUtils.setBound(label, labelRect);
-			connect(label, mItemCount);
+			connect(label, game.mItemCount);
 			mStage.addActor(label);
 
 			rect = RectUtils.createRect(WIDTH / PHI / PHI / 2, labelRect.y, fontSize, fontSize, 2);
@@ -86,7 +85,7 @@ public class TargetScreen extends GrScreen {
 			minusButton.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					mItemCount.set(mItemCount.get() - 1);
+					game.mItemCount.set(game.mItemCount.get() - 1);
 				}
 			});
 
@@ -100,7 +99,7 @@ public class TargetScreen extends GrScreen {
 			addButton.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					mItemCount.set(mItemCount.get() + 1);
+					game.mItemCount.set(game.mItemCount.get() + 1);
 				}
 			});
 
@@ -113,7 +112,8 @@ public class TargetScreen extends GrScreen {
 			nextButton.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					iParent.setScreen(new GameScreen(iParent));
+					iParent.setScreen(new GameScreen(iParent, game.mItemCount.get()));
+					// GameLogic.toFactor(mItemCount.get());
 				}
 			});
 		}

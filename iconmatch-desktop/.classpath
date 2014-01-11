@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
 	<classpathentry kind="lib" path="/iconmatch/libs/gdx-freetype-natives.jar"/>
 	<classpathentry kind="lib" path="/iconmatch/libs/gdx-freetype.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/HomuValue"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
