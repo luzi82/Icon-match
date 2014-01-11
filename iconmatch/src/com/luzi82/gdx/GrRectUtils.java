@@ -1,8 +1,8 @@
-package com.luzi82.iconmatch;
+package com.luzi82.gdx;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public class RectUtils {
+public class GrRectUtils {
 
 	public static Rectangle createRect(float aX, float aY, float aW, float aH, int aAlign) {
 		float x = 0, y = 0;

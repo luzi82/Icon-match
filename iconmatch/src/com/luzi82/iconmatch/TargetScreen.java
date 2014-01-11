@@ -15,9 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.luzi82.gdx.GrDrawableUtils;
+import com.luzi82.gdx.GrActorUtils;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
+import com.luzi82.gdx.GrRectUtils;
 import com.luzi82.homuvalue.Value.Variable;
 
 public class TargetScreen extends GrScreen {
@@ -68,19 +71,19 @@ public class TargetScreen extends GrScreen {
 			ButtonStyle bs;
 			Rectangle rect;
 
-			Rectangle labelRect = RectUtils.createRect(0, (HEIGHT - fontSize - btnH) / PHI + btnH, WIDTH, fontSize, 1);
+			Rectangle labelRect = GrRectUtils.createRect(0, (HEIGHT - fontSize - btnH) / PHI + btnH, WIDTH, fontSize, 1);
 			final Label label = new Label("", ls);
 			label.setAlignment(Align.center);
-			ActorUtils.setBound(label, labelRect);
+			GrActorUtils.setBound(label, labelRect);
 			connect(label, game.mItemCount);
 			mStage.addActor(label);
 
-			rect = RectUtils.createRect(WIDTH / PHI / PHI / 2, labelRect.y, fontSize, fontSize, 2);
+			rect = GrRectUtils.createRect(WIDTH / PHI / PHI / 2, labelRect.y, fontSize, fontSize, 2);
 			bs = new ButtonStyle();
-			bs.up = DrawableUtils.createDrawable(mWhite1Tex, new Color(0xff0000ff));
-			bs.down = DrawableUtils.createDrawable(mWhite1Tex, new Color(0xff7f7fff));
+			bs.up = GrDrawableUtils.createDrawable(mWhite1Tex, new Color(0xff0000ff));
+			bs.down = GrDrawableUtils.createDrawable(mWhite1Tex, new Color(0xff7f7fff));
 			final Button minusButton = new Button(bs);
-			ActorUtils.setBound(minusButton, rect);
+			GrActorUtils.setBound(minusButton, rect);
 			mStage.addActor(minusButton);
 			minusButton.addListener(new ChangeListener() {
 				@Override
@@ -89,12 +92,12 @@ public class TargetScreen extends GrScreen {
 				}
 			});
 
-			rect = RectUtils.createRect(WIDTH * PHI / 2, labelRect.y, fontSize, fontSize, 2);
+			rect = GrRectUtils.createRect(WIDTH * PHI / 2, labelRect.y, fontSize, fontSize, 2);
 			bs = new ButtonStyle();
-			bs.up = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x00ff00ff));
-			bs.down = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x7fff7fff));
+			bs.up = GrDrawableUtils.createDrawable(mWhite1Tex, new Color(0x00ff00ff));
+			bs.down = GrDrawableUtils.createDrawable(mWhite1Tex, new Color(0x7fff7fff));
 			final Button addButton = new Button(bs);
-			ActorUtils.setBound(addButton, rect);
+			GrActorUtils.setBound(addButton, rect);
 			mStage.addActor(addButton);
 			addButton.addListener(new ChangeListener() {
 				@Override
@@ -104,10 +107,10 @@ public class TargetScreen extends GrScreen {
 			});
 
 			bs = new ButtonStyle();
-			bs.up = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x0000ffff));
-			bs.down = DrawableUtils.createDrawable(mWhite1Tex, new Color(0x7f7fffff));
+			bs.up = GrDrawableUtils.createDrawable(mWhite1Tex, new Color(0x0000ffff));
+			bs.down = GrDrawableUtils.createDrawable(mWhite1Tex, new Color(0x7f7fffff));
 			final Button nextButton = new Button(bs);
-			ActorUtils.setBound(nextButton, RectUtils.createRect(WIDTH / 2, (HEIGHT - fontSize - btnH) / PHI / PHI, btnW, btnH, 2));
+			GrActorUtils.setBound(nextButton, GrRectUtils.createRect(WIDTH / 2, (HEIGHT - fontSize - btnH) / PHI / PHI, btnW, btnH, 2));
 			mStage.addActor(nextButton);
 			nextButton.addListener(new ChangeListener() {
 				@Override

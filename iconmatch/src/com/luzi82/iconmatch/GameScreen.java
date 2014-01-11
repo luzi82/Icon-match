@@ -18,11 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
+import com.luzi82.gdx.GrActorUtils;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
-import com.luzi82.iconmatch.RectUtils.Point;
-import com.luzi82.iconmatch.RectUtils.Size;
+import com.luzi82.gdx.GrRectUtils;
+import com.luzi82.gdx.GrRectUtils.Point;
+import com.luzi82.gdx.GrRectUtils.Size;
 
 public class GameScreen extends GrScreen {
 
@@ -76,7 +78,7 @@ public class GameScreen extends GrScreen {
 
 			Rectangle screenRect = new Rectangle(0, 0, WIDTH, HEIGHT);
 			Size screenSize = new Size(WIDTH, HEIGHT);
-			Point screen5 = RectUtils.getPoint(screenRect, 5);
+			Point screen5 = GrRectUtils.getPoint(screenRect, 5);
 
 			mWhite1Pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 			mWhite1Pixmap.setColor(1f, 1f, 1f, 1f);
@@ -96,10 +98,10 @@ public class GameScreen extends GrScreen {
 			}
 
 			mPlayground = new Group();
-			Size playGroundSize = RectUtils.getInner(screenSize, 1 / PHI);
-			mPlayGroundRect = RectUtils.createRect(screen5, playGroundSize, 5);
+			Size playGroundSize = GrRectUtils.getInner(screenSize, 1 / PHI);
+			mPlayGroundRect = GrRectUtils.createRect(screen5, playGroundSize, 5);
 			mUnitSize = mPlayGroundRect.width / 3f;
-			ActorUtils.setBound(mPlayground, mPlayGroundRect);
+			GrActorUtils.setBound(mPlayground, mPlayGroundRect);
 			for (int i = 0; i < VIEW_BLOCK_MAX; ++i) {
 				mLeftImgAry[i] = new Image();
 				mCenterImgAry[i] = new Image();

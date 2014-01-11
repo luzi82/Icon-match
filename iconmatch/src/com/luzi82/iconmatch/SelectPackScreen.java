@@ -9,9 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.luzi82.gdx.GrActorUtils;
 import com.luzi82.gdx.GrGame;
 import com.luzi82.gdx.GrScreen;
 import com.luzi82.gdx.GrView;
+import com.luzi82.gdx.GrRectUtils;
 
 public class SelectPackScreen extends GrScreen {
 	public SelectPackScreen(GrGame aParent) {
@@ -55,7 +57,7 @@ public class SelectPackScreen extends GrScreen {
 			down = new Sprite(mWhite1Tex);
 			down.setColor(0.5f, 1f, 0.5f, 1f);
 			mPackImgBtn = new Button(new SpriteDrawable(up), new SpriteDrawable(down));
-			ActorUtils.setBound(mPackImgBtn, RectUtils.createRect(aWidth / 2, aHeight / 2, packImgSize, packImgSize, 5));
+			GrActorUtils.setBound(mPackImgBtn, GrRectUtils.createRect(aWidth / 2, aHeight / 2, packImgSize, packImgSize, 5));
 			mStage.addActor(mPackImgBtn);
 
 			int arrowImgSize = Math.round(minSide / PHI / PHI / PHI / 2);
@@ -65,14 +67,14 @@ public class SelectPackScreen extends GrScreen {
 			// mLeftArrowImg.setRect(RectUtils.createRect(aWidth / 2 -
 			// arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
 			mLeftArrowImg.setColor(1f, 0f, 0f, 1f);
-			ActorUtils.setBound(mLeftArrowImg, RectUtils.createRect(aWidth / 2 - arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
+			GrActorUtils.setBound(mLeftArrowImg, GrRectUtils.createRect(aWidth / 2 - arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
 			mStage.addActor(mLeftArrowImg);
 
 			mRightArrowImg = new Image(mWhite1Tex);
 			// mRightArrowImg.setRect(RectUtils.createRect(aWidth / 2 +
 			// arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
 			mRightArrowImg.setColor(0f, 0f, 1f, 1f);
-			ActorUtils.setBound(mRightArrowImg, RectUtils.createRect(aWidth / 2 + arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
+			GrActorUtils.setBound(mRightArrowImg, GrRectUtils.createRect(aWidth / 2 + arrowImgDx, aHeight / 2, arrowImgSize, arrowImgSize, 5));
 			mStage.addActor(mRightArrowImg);
 
 			int backBtnSize = Math.round(Gdx.graphics.getPpcX() * 1f);
@@ -83,7 +85,7 @@ public class SelectPackScreen extends GrScreen {
 			down = new Sprite(mWhite1Tex);
 			down.setColor(0.5f, 0.5f, 0.5f, 1f);
 			mBackBtn = new Button(new SpriteDrawable(up), new SpriteDrawable(down));
-			ActorUtils.setBound(mBackBtn, RectUtils.createRect(backBtnMargin, HEIGHT - backBtnMargin, backBtnSize, backBtnSize, 7));
+			GrActorUtils.setBound(mBackBtn, GrRectUtils.createRect(backBtnMargin, HEIGHT - backBtnMargin, backBtnSize, backBtnSize, 7));
 			mStage.addActor(mBackBtn);
 			mBackBtn.addListener(new ChangeListener() {
 				

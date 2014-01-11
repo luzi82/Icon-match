@@ -1,11 +1,11 @@
-package com.luzi82.iconmatch;
+package com.luzi82.gdx;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-public class DrawableUtils {
+public class GrDrawableUtils {
 
 	static public SpriteDrawable createDrawable(Texture aTexture, Color aColor) {
 		Sprite s = new Sprite(aTexture);

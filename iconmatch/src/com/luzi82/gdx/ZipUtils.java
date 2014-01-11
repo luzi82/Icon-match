@@ -1,4 +1,4 @@
-package com.luzi82.iconmatch;
+package com.luzi82.gdx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

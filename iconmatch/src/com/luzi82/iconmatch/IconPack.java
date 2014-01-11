@@ -9,6 +9,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Disposable;
 import com.luzi82.gdx.GrDeepDispose;
+import com.luzi82.gdx.ZipUtils;
 
 public class IconPack implements Disposable {
 

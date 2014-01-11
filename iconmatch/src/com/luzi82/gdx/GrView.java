@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.luzi82.homuvalue.Value;
-import com.luzi82.iconmatch.ActorUtils;
 
 public abstract class GrView {
 
@@ -152,7 +151,7 @@ public abstract class GrView {
 	// }
 
 	public <T> void connect(final Label aLabel, final Value<T> aValue) {
-		mMember.add(ActorUtils.connectValue(aLabel, aValue));
+		mMember.add(GrActorUtils.connectValue(aLabel, aValue));
 	}
 
 }

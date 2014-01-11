@@ -1,4 +1,4 @@
-package com.luzi82.iconmatch;
+package com.luzi82.gdx;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
 
-public class ActorUtils {
+public class GrActorUtils {
 
 	public static void setBound(Actor aActor, Rectangle aRect) {
 		aActor.setBounds(aRect.x, aRect.y, aRect.width, aRect.height);
