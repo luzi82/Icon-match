@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ZipUtils {
+public class GrZipUtils {
 
 	public static ZipEntry[] getZipEntrieAry(InputStream is) throws IOException {
 		LinkedList<ZipEntry> zList = new LinkedList<ZipEntry>();

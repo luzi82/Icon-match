@@ -9,7 +9,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Disposable;
 import com.luzi82.gdx.GrDeepDispose;
-import com.luzi82.gdx.ZipUtils;
+import com.luzi82.gdx.GrZipUtils;
 
 public class IconPack implements Disposable {
 
@@ -25,8 +25,8 @@ public class IconPack implements Disposable {
 		LinkedList<Pixmap> aBitmapList = new LinkedList<Pixmap>();
 		LinkedList<Pixmap> bBitmapList = new LinkedList<Pixmap>();
 
-		ZipEntry[] zeAry = ZipUtils.getZipEntrieAry(fh.read());
-		Map<String, ZipEntry> zeMap = ZipUtils.toZeMap(zeAry);
+		ZipEntry[] zeAry = GrZipUtils.getZipEntrieAry(fh.read());
+		Map<String, ZipEntry> zeMap = GrZipUtils.toZeMap(zeAry);
 		for (ZipEntry zea : zeAry) {
 			String filename = zea.getName();
 			if (!filename.endsWith(".a.png"))
@@ -38,9 +38,9 @@ public class IconPack implements Disposable {
 				continue;
 			}
 			byte[] data;
-			data = ZipUtils.getContent(fh.read(), filename);
+			data = GrZipUtils.getContent(fh.read(), filename);
 			aBitmapList.add(new Pixmap(data, 0, data.length));
-			data = ZipUtils.getContent(fh.read(), bFilename);
+			data = GrZipUtils.getContent(fh.read(), bFilename);
 			bBitmapList.add(new Pixmap(data, 0, data.length));
 		}
 
