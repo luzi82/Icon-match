@@ -7,14 +7,19 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -78,6 +83,8 @@ public class GameScreen extends GrScreen {
 		public Drawable[] mCenterDrawableAry;
 		public Drawable[] mSelectionDrawableAry;
 
+		public BitmapFont mFont;
+
 		public Render(int aWidth, int aHeight) {
 			super(aWidth, aHeight);
 
@@ -115,6 +122,24 @@ public class GameScreen extends GrScreen {
 				mPlayground.addActor(mCenterImgAry[i]);
 				mPlayground.addActor(mRightImgAry[i]);
 			}
+			FreeTypeFontGenerator g = new FreeTypeFontGenerator(Gdx.files.internal("data/Roboto-Regular.ttf"));
+			mFont = g.generateFont((int) Math.floor(playGroundSize.mWidth / PHI), "0123456789", false);
+			g.dispose();
+			Label.LabelStyle ls = new LabelStyle();
+			ls.font = mFont;
+			ls.fontColor = new Color(0xffffff3f);
+			Rectangle labelRect = GrRectUtils.createRect(mPlayGroundRect.width / 2, mPlayGroundRect.height / 2, mPlayGroundRect.width, mPlayGroundRect.width, 5);
+			final Label label = new Label("", ls);
+			label.setAlignment(Align.center);
+			GrActorUtils.setBound(label, labelRect);
+			label.addAction(new Action() {
+				@Override
+				public boolean act(float delta) {
+					label.setText(Integer.toString(mLogic.mTarget - mLogic.mBlockKill));
+					return false;
+				}
+			});
+			mPlayground.addActor(label);
 			mStage.addAction(new Action() {
 				@Override
 				public boolean act(float delta) {
