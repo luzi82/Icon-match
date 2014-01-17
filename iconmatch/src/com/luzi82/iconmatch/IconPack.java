@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Disposable;
@@ -19,11 +21,14 @@ public class IconPack implements Disposable {
 	// public Bitmap[] mSelectionBitmap;
 	public Pixmap[] mSelectionBitmap;
 
+	public Sound[] mSoundAry;
+
 	public int mSelectionSize;
 
 	public static IconPack load(FileHandle fh) throws IOException {
 		LinkedList<Pixmap> aBitmapList = new LinkedList<Pixmap>();
 		LinkedList<Pixmap> bBitmapList = new LinkedList<Pixmap>();
+		LinkedList<Sound> soundList = new LinkedList<Sound>();
 
 		ZipEntry[] zeAry = GrZipUtils.getZipEntrieAry(fh.read());
 		Map<String, ZipEntry> zeMap = GrZipUtils.toZeMap(zeAry);
@@ -42,12 +47,23 @@ public class IconPack implements Disposable {
 			aBitmapList.add(new Pixmap(data, 0, data.length));
 			data = GrZipUtils.getContent(fh.read(), bFilename);
 			bBitmapList.add(new Pixmap(data, 0, data.length));
+
+			String soundFilename = prefix + ".ogg";
+			ZipEntry zes = zeMap.get(bFilename);
+			if (zes != null) {
+				FileHandle soundFh = GrZipUtils.unzipToTmpFileHandle(fh.read(), soundFilename,".ogg");
+				soundList.add(Gdx.audio.newSound(soundFh));
+				soundFh.delete();
+			} else {
+				soundList.add(null);
+			}
 		}
 
 		IconPack ret = new IconPack();
 
 		ret.mCenterBitmap = aBitmapList.toArray(new Pixmap[0]);
 		ret.mSelectionBitmap = bBitmapList.toArray(new Pixmap[0]);
+		ret.mSoundAry = soundList.toArray(new Sound[0]);
 		ret.mSelectionSize = aBitmapList.size();
 
 		return ret;

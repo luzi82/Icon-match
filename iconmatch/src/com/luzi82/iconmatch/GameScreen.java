@@ -3,6 +3,7 @@ package com.luzi82.iconmatch;
 import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,17 +21,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.luzi82.gdx.GrActorUtils;
 import com.luzi82.gdx.GrGame;
-import com.luzi82.gdx.GrScreen;
-import com.luzi82.gdx.GrView;
 import com.luzi82.gdx.GrRectUtils;
 import com.luzi82.gdx.GrRectUtils.Point;
 import com.luzi82.gdx.GrRectUtils.Size;
+import com.luzi82.gdx.GrScreen;
+import com.luzi82.gdx.GrView;
 
 public class GameScreen extends GrScreen {
 
 	public IconPack mIconPack;
 	public GameLogic mLogic;
 	public long mTimeStamp;
+	public Sound mFailSound;
+	public Sound mSuccessSound;
 
 	public boolean mEndProcessed = false;
 
@@ -43,6 +46,8 @@ public class GameScreen extends GrScreen {
 		}
 		mLogic = new GameLogic(GameLogic.toFactor(aTarget), aParent.mRandom, mIconPack.mCenterBitmap.length, aTarget);
 		mTimeStamp = System.currentTimeMillis();
+		mFailSound = Gdx.audio.newSound(Gdx.files.internal("data/fail.ogg"));
+		mSuccessSound = Gdx.audio.newSound(Gdx.files.internal("data/success.ogg"));
 	}
 
 	@Override
@@ -166,7 +171,10 @@ public class GameScreen extends GrScreen {
 			mLeftBtn.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					mLogic.kill(GameLogic.Side.LEFT);
+					int kill = mLogic.kill(GameLogic.Side.LEFT);
+					if (kill >= 0) {
+						mIconPack.mSoundAry[kill].play();
+					}
 				}
 			});
 			mStage.addActor(mLeftBtn);
@@ -176,7 +184,10 @@ public class GameScreen extends GrScreen {
 			mRightBtn.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					mLogic.kill(GameLogic.Side.RIGHT);
+					int kill = mLogic.kill(GameLogic.Side.RIGHT);
+					if (kill >= 0) {
+						mIconPack.mSoundAry[kill].play();
+					}
 				}
 			});
 			mStage.addActor(mRightBtn);
@@ -187,6 +198,16 @@ public class GameScreen extends GrScreen {
 					if (!mEndProcessed) {
 						mLogic.tick(nowF());
 						if (mLogic.mState != GameLogic.State.PLAY) {
+							if (mLogic.mState == GameLogic.State.WIN) {
+								Timer.instance().scheduleTask(new Timer.Task() {
+									@Override
+									public void run() {
+										mSuccessSound.play();
+									}
+								}, 0.5f);
+							} else if (mLogic.mState == GameLogic.State.LOSE) {
+								mFailSound.play();
+							}
 							Timer.instance().scheduleTask(new Timer.Task() {
 								@Override
 								public void run() {

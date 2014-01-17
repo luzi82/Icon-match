@@ -52,19 +52,22 @@ public class GameLogic {
 		buildBlock();
 	}
 
-	public void kill(Side aSize) {
+	public int kill(Side aSize) {
 		if (mState != State.PLAY)
-			return;
+			return -2;
 		Block first = mAnswer.getFirst();
 		if (first == null)
-			return;
+			return -2;
 		boolean hit = ((aSize == Side.LEFT) == (first.left == first.center));
 		if (hit) {
+			int ret = first.center;
 			mAnswer.removeFirst();
 			mLifeBase += 1;
 			++mBlockKill;
+			return ret;
 		} else {
 			mState = State.LOSE;
+			return -1;
 		}
 	}
 
